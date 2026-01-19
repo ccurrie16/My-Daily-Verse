@@ -7,7 +7,7 @@ import 'package:bible/services/saved_verses_service.dart';
 
 import 'package:bible/components/daily_verse.dart';
 import 'package:bible/pages/saved_verses.dart';
-import 'package:bible/pages/settings.dart';
+
 
 /// 🎨 App-wide colors
 class AppColors {
@@ -81,9 +81,8 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.settings, size: 28),
             color: AppColors.darkgold,
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const Settings()),
+              Navigator.pushNamed(
+                context, '/settings'
               );
             },
           ),
