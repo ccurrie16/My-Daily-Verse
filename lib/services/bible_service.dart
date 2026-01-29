@@ -9,7 +9,7 @@ class BibleService {
 
   static Future<void> loadVerses() async {
     final jsonString =
-        await rootBundle.loadString('assets/bible/top_rated_verses.json');
+        await rootBundle.loadString('assets/bible/KJV.json');
 
     final List<dynamic> data = jsonDecode(jsonString) as List<dynamic>;
 

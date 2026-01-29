@@ -12,7 +12,7 @@ final themeController = ThemeController();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await BibleService.loadBible();
+  await BibleService.loadVerses();
   await SavedVersesService.init();
 await NotificationService.init();
 await ReminderSettingsService.init();
