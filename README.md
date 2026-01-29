@@ -3,7 +3,8 @@
 A Flutter app that displays a Verse of the Day and allows users to generate random Bible verses.
 
 ## Features
-- Verse of the Day (same for everyone)
+- 1,100+ verses
+- Verse of the Day
 - Random verse generator
 - Offline Bible JSON
 - Clean, minimal UI
@@ -15,8 +16,8 @@ A Flutter app that displays a Verse of the Day and allows users to generate rand
 
 ## Screens
 - Home (Daily Verse)
-- Saved Verses (coming soon)
-- Settings (Coming soon)
+- Saved Verses
+- Settings
 
 ## Getting Started
 ```bash
