@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:bible/pages/home_screen.dart';
 import 'package:bible/models/verse.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 
 class DailyVerse extends StatelessWidget {
   final Verse verse;
@@ -56,8 +58,8 @@ class DailyVerse extends StatelessWidget {
                 child: Text(
                   verse.text,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 18,
+                  style: GoogleFonts.cormorantGaramond(
+                    fontSize: 20,
                     color: AppColors.textPrimary,
                     height: 1.6,
                   ),
@@ -69,8 +71,8 @@ class DailyVerse extends StatelessWidget {
 
             Text(
               verse.reference,
-              style: const TextStyle(
-                fontSize: 14,
+              style: GoogleFonts.cormorantGaramond(
+                fontSize: 18,
                 color: AppColors.textSecondary,
               ),
             ),

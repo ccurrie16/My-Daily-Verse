@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-
 import 'package:bible/models/verse.dart';
-import 'package:bible/pages/home_screen.dart'; // for AppColors
+import 'package:bible/pages/home_screen.dart';
 import 'package:bible/services/saved_verses_service.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SavedVerses extends StatelessWidget {
   const SavedVerses({super.key});
@@ -15,13 +15,14 @@ class SavedVerses extends StatelessWidget {
         valueListenable: SavedVersesService.saved,
         builder: (context, savedList, _) {
           if (savedList.isEmpty) {
-            return const Center(
+            return Center(
               child: Text(
                 "No saved verses yet.\nTap the bookmark to save one.",
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: GoogleFonts.cormorantGaramond(
                   fontSize: 18,
                   color: AppColors.textSecondary,
+                  height: 1.5,
                 ),
               ),
             );
@@ -46,17 +47,19 @@ class SavedVerses extends StatelessWidget {
                   children: [
                     Text(
                       v.reference,
-                      style: const TextStyle(
+                      style: GoogleFonts.cormorantGaramond(
                         fontWeight: FontWeight.w700,
                         color: AppColors.darkgold,
+                        fontSize: 18,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       v.text,
-                      style: const TextStyle(
+                      style: GoogleFonts.cormorantGaramond(
                         color: AppColors.textPrimary,
                         height: 1.5,
+                        fontSize: 20,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -64,7 +67,13 @@ class SavedVerses extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () => SavedVersesService.remove(v),
-                        child: const Text("Remove"),
+                        child: Text(
+                          "Remove",
+                          style: GoogleFonts.libreBaskerville(
+                            color: AppColors.darkgold,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
                   ],
