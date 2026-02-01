@@ -8,6 +8,9 @@ import 'package:bible/services/saved_verses_service.dart';
 import 'package:bible/components/daily_verse.dart';
 import 'package:bible/pages/saved_verses.dart';
 
+import 'package:google_fonts/google_fonts.dart';
+
+
 
 /// 🎨 App-wide colors
 class AppColors {
@@ -67,9 +70,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
 
-        title: const Text(
+        title: Text(
           'My Daily Verse',
-          style: TextStyle(
+          style: GoogleFonts.greatVibes(
             color: AppColors.darkgold,
             fontWeight: FontWeight.w600,
           ),
