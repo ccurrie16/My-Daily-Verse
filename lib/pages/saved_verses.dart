@@ -16,14 +16,38 @@ class SavedVerses extends StatelessWidget {
         builder: (context, savedList, _) {
           if (savedList.isEmpty) {
             return Center(
-              child: Text(
-                "No saved verses yet.\nTap the bookmark to save one.",
-                textAlign: TextAlign.center,
-                style: GoogleFonts.cormorantGaramond(
-                  fontSize: 18,
-                  color: AppColors.textSecondary,
-                  height: 1.5,
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.bookmark_border,
+                    size: 80,
+                    color: AppColors.darkgold.withOpacity(0.3),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    "Start Building Your Collection",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.cormorantGaramond(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height:12),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 48),
+                    child: Text(
+                      "Save verses that speak to you by tapping the bookmark icon",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.cormorantGaramond(
+                        fontSize: 16,
+                        color: AppColors.textSecondary,
+                        height: 1.5
+                      ),
+                    ),
+                  ),
+                ],
               ),
             );
           }
@@ -35,7 +59,9 @@ class SavedVerses extends StatelessWidget {
             itemBuilder: (context, index) {
               final v = savedList[index];
 
-              return Container(
+              return AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: AppColors.offwhite,
@@ -45,13 +71,27 @@ class SavedVerses extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      v.reference,
-                      style: GoogleFonts.cormorantGaramond(
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.darkgold,
-                        fontSize: 18,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            v.reference,
+                            style: GoogleFonts.cormorantGaramond(
+                               fontWeight: FontWeight.w700,
+                                color: AppColors.darkgold,
+                                fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () => SavedVersesService.remove(v),
+                          icon: const Icon(Icons.bookmark_remove),
+                          color: AppColors.darkgold,
+                          tooltip: "Remove from saved",
+                          iconSize: 24,
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -60,20 +100,6 @@ class SavedVerses extends StatelessWidget {
                         color: AppColors.textPrimary,
                         height: 1.5,
                         fontSize: 20,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () => SavedVersesService.remove(v),
-                        child: Text(
-                          "Remove",
-                          style: GoogleFonts.libreBaskerville(
-                            color: AppColors.darkgold,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
                       ),
                     ),
                   ],
@@ -86,3 +112,4 @@ class SavedVerses extends StatelessWidget {
     );
   }
 }
+
