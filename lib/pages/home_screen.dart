@@ -161,6 +161,7 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   late Verse _currentVerse;
+  bool _isGenerating = false;
 
   @override
   void initState() {
@@ -168,9 +169,14 @@ class _HomeTabState extends State<HomeTab> {
     _currentVerse = BibleService.getVerseOfTheDay(DateTime.now());
   }
 
-  void _generateNewVerse() {
+  void _generateNewVerse() async {
+    setState(() {
+      _isGenerating = true;
+    });
+    await Future.delayed(const Duration(milliseconds: 150));
     setState(() {
       _currentVerse = BibleService.getRandomVerse();
+      _isGenerating = false;
     });
   }
 
@@ -198,20 +204,62 @@ class _HomeTabState extends State<HomeTab> {
         const SizedBox(height: 12),
 
         /// 🔄 Generate new verse button
-        ElevatedButton(
-          onPressed: _generateNewVerse,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.darkgold,
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24,
-              vertical: 14,
+        AnimatedScale(
+          scale: _isGenerating ? 0.95 : 1.0,
+          duration: const Duration(milliseconds: 150),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: _isGenerating ? null : _generateNewVerse,
+              borderRadius: BorderRadius: BorderRadius.circular(12),
+              splashColor: AppColors.gold.withOpacity(0.3),
+              highlightColor: AppColors.gold.withOpacity(0.2),
+              child: Ink(
+                decoration: BoxDecoration(
+                  color: _isGenerating
+                    ? AppColors.darkgold.withOpacity(0.7)
+                    : AppColors.darkgold,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    boxShadow(
+                      color: AppColors.darkgold.withOpacity(0.3),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 14,
+                  ),
+                  child : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if(_isGenerating)
+                      const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                      ),
+                      if (_isGenerating) const SizedBox(width: 12),
+                      Text(
+                        _isGenerating ? 'Generating...' : 'Generate New Verse',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
-          child: const Text('Generate New Verse'),
         ),
       ],
     );
