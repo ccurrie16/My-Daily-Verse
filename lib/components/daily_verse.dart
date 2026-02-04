@@ -30,23 +30,39 @@ class DailyVerse extends StatelessWidget {
           border: Border.all(color: AppColors.softgold, width: 3),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            )
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
+              spreadRadius: 1,
+            ),
+            BoxShadow(
+              color: AppColors.darkgold.withOpacity(0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
           ],
         ),
         child: Column(
           children: [
-            // top-right save icon
             Align(
               alignment: Alignment.topRight,
               child: IconButton(
                 onPressed: onToggleSave,
-                icon: Icon(
+                icon: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder: (child, animation) {
+                    return ScaleTransition(
+                      scale: animation,
+                      child: child,
+                    );
+                  },
+                  child: Icon(
                   isSaved ? Icons.bookmark : Icons.bookmark_border,
+                  key: ValueKey<bool>(isSaved),
+                  ),
                 ),
                 color: AppColors.darkgold,
+                iconSize: 28,
                 tooltip: isSaved ? "Unsave" : "Save",
               ),
             ),
