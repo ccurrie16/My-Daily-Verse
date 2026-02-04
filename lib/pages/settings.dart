@@ -60,6 +60,59 @@ class _SettingsState extends State<Settings> {
     return '$hour12:${_twoDigits(t.minute)} $ampm';
   }
 
+  // ✨ 5. CUSTOM STYLED TIME PICKER - Matches gold/cream aesthetic
+  Future<void> _showCustomTimePicker(TimeOfDay currentTime) async {
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: currentTime,
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: AppColors.darkgold, // Header background
+              onPrimary: Colors.white, // Header text
+              surface: AppColors.offwhite, // Dialog background
+              onSurface: AppColors.textPrimary, // Body text
+            ),
+            timePickerTheme: TimePickerThemeData(
+              backgroundColor: AppColors.offwhite,
+              hourMinuteTextColor: AppColors.textPrimary,
+              hourMinuteColor: WidgetStateColor.resolveWith((states) =>
+                  states.contains(WidgetState.selected)
+                      ? AppColors.softgold
+                      : AppColors.white),
+              dayPeriodTextColor: AppColors.textPrimary,
+              dayPeriodColor: WidgetStateColor.resolveWith((states) =>
+                  states.contains(WidgetState.selected)
+                      ? AppColors.softgold
+                      : AppColors.white),
+              dialHandColor: AppColors.darkgold,
+              dialBackgroundColor: AppColors.white,
+              dialTextColor: WidgetStateColor.resolveWith((states) =>
+                  states.contains(WidgetState.selected)
+                      ? Colors.white
+                      : AppColors.textPrimary),
+              entryModeIconColor: AppColors.darkgold,
+              helpTextStyle: const TextStyle(
+                color: AppColors.textSecondary,
+              ),
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.darkgold,
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null) {
+      await ReminderSettingsService.setTime(picked);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -244,17 +297,7 @@ class _SettingsState extends State<Settings> {
                       valueListenable: ReminderSettingsService.time,
                       builder: (_, t, __) {
                         return InkWell(
-                          onTap: enabled
-                              ? () async {
-                                  final picked = await showTimePicker(
-                                    context: context,
-                                    initialTime: t,
-                                  );
-                                  if (picked != null) {
-                                    await ReminderSettingsService.setTime(picked);
-                                  }
-                                }
-                              : null,
+                          onTap: enabled ? () => _showCustomTimePicker(t) : null,
                           borderRadius: BorderRadius.circular(12),
                           child: Container(
                             padding: const EdgeInsets.symmetric(
@@ -266,6 +309,12 @@ class _SettingsState extends State<Settings> {
                                   ? AppColors.offwhite
                                   : AppColors.offwhite.withOpacity(0.6),
                               borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: enabled
+                                    ? AppColors.softgold.withOpacity(0.5)
+                                    : Colors.transparent,
+                                width: 1,
+                              ),
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -280,15 +329,27 @@ class _SettingsState extends State<Settings> {
                                         : AppColors.textSecondary,
                                   ),
                                 ),
-                                Text(
-                                  _timeLabel(t),
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w800,
-                                    color: enabled
-                                        ? AppColors.darkgold
-                                        : AppColors.textSecondary,
-                                  ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      _timeLabel(t),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w800,
+                                        color: enabled
+                                            ? AppColors.darkgold
+                                            : AppColors.textSecondary,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Icon(
+                                      Icons.access_time,
+                                      size: 18,
+                                      color: enabled
+                                          ? AppColors.darkgold
+                                          : AppColors.textSecondary,
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -334,7 +395,7 @@ class _Card extends StatelessWidget {
   }
 }
 
-/// ⬇️ Sliding expand/collapse area (the “bar slides down”)
+/// ⬇️ Sliding expand/collapse area (the "bar slides down")
 class _SlideDown extends StatelessWidget {
   final bool expanded;
   final Widget child;
