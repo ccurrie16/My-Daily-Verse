@@ -40,6 +40,7 @@ class _MyAppState extends State<MyApp> {
     Future.delayed(const Duration(milliseconds: 2000), () {
       if (mounted) {
         setState(() {
+          _isLoading = false;
         });
       }
     });
@@ -62,10 +63,10 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData.light(useMaterial3: true),
       darkTheme: ThemeData.dark(useMaterial3: true),
 
-      home: isLoading ? const LoadingScreen() : const HomeScreen(),
+      home: _isLoading ? const LoadingScreen() : const HomeScreen(),
       routes: {
-        '/homescreen': (context) => HomeScreen(),
-        '/savedverses': (context) => SavedVerses(),
+        '/homescreen': (context) => const HomeScreen(),
+        '/savedverses': (context) => const SavedVerses(),
         '/settings': (context) => Settings(themeController: themeController),
       },
     );
