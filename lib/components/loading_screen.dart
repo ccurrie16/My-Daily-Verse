@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// ✨ 6. SPLASH/LOADING SCREEN - Branded loading screen with gold cross aesthetic
+/// Branded loading screen with gold cross aesthetic
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
 
