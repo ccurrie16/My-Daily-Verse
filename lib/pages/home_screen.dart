@@ -211,7 +211,7 @@ class _HomeTabState extends State<HomeTab> {
             color: Colors.transparent,
             child: InkWell(
               onTap: _isGenerating ? null : _generateNewVerse,
-              borderRadius: BorderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12),
               splashColor: AppColors.gold.withOpacity(0.3),
               highlightColor: AppColors.gold.withOpacity(0.2),
               child: Ink(
@@ -221,7 +221,7 @@ class _HomeTabState extends State<HomeTab> {
                     : AppColors.darkgold,
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
-                    boxShadow(
+                    BoxShadow(
                       color: AppColors.darkgold.withOpacity(0.3),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
