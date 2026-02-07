@@ -12,7 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 
 
-/// 🎨 App-wide colors
+/// App Colors
 class AppColors {
   AppColors._();
 
@@ -36,29 +36,29 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-
+  // Pages for bottom navigation bar
   final List<Widget> _pages = const [
     HomeTab(),
     SavedVerses(),
   ];
-
+  // Bottom navigation bar index change handler
   void _navigateBottomBar(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
-
+/ / Main build method for home screen with app bar, body, and bottom navigation
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-
+      // App bar with cross icon, title, and settings button
       appBar: AppBar(
         backgroundColor: AppColors.white,
         elevation: 0,
         centerTitle: true,
 
-        /// ✝️ Cross icon (top-left)
+        // Cross icon
         leading: Padding(
           padding: const EdgeInsets.all(12),
           child: SvgPicture.asset(
@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-
+        // App title with custom font
         title: Text(
           'My Daily Verse',
           style: GoogleFonts.greatVibes(
@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
 
-        /// ⚙️ Settings icon (top-right)
+        // Settings icon
         actions: [
           IconButton(
             icon: const Icon(Icons.settings, size: 28),
@@ -91,9 +91,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-
+      // Display selected page based on bottom navigation index
       body: _pages[_selectedIndex],
-
+      // Bottom navigation bar with Home and Saved tabs
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: AppColors.offwhite,
         currentIndex: _selectedIndex,
@@ -102,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
         unselectedItemColor: AppColors.darkgold,
         showUnselectedLabels: true,
         elevation: 8,
-
+        // Custom styles for selected and unselected tabs
         selectedLabelStyle: const TextStyle(
           fontWeight: FontWeight.w900,
           fontSize: 12,
@@ -111,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
           fontWeight: FontWeight.w500,
           fontSize: 12,
         ),
-
+        // Custom icons with underline indicator for selected tab
         items: [
           BottomNavigationBarItem(
             icon: Column(
@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-/// 🏠 Home tab with verse logic
+// Home tab with verse logic
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
 
@@ -162,13 +162,13 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   late Verse _currentVerse;
   bool _isGenerating = false;
-
+  // Initialize current verse with verse of the day on widget initialization
   @override
   void initState() {
     super.initState();
     _currentVerse = BibleService.getVerseOfTheDay(DateTime.now());
   }
-
+  // Generate a new random verse and update state
   void _generateNewVerse() async {
     setState(() {
       _isGenerating = true;
@@ -184,13 +184,13 @@ class _HomeTabState extends State<HomeTab> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        /// 🔖 Daily verse card with save support
+        // Daily verse card with save/unsave function
         ValueListenableBuilder<List<Verse>>(
           valueListenable: SavedVersesService.saved,
           builder: (_, saved, __) {
             final isSaved =
                 SavedVersesService.isSaved(_currentVerse);
-
+            // Return DailyVerse widget with current verse and save status
             return DailyVerse(
               verse: _currentVerse,
               isSaved: isSaved,
@@ -203,13 +203,14 @@ class _HomeTabState extends State<HomeTab> {
 
         const SizedBox(height: 12),
 
-        /// 🔄 Generate new verse button
+        // Generate new verse button with loading state
         AnimatedScale(
           scale: _isGenerating ? 0.95 : 1.0,
           duration: const Duration(milliseconds: 150),
           child: Material(
             color: Colors.transparent,
             child: InkWell(
+              // Disable button while generating new verse to prevent multiple taps
               onTap: _isGenerating ? null : _generateNewVerse,
               borderRadius: BorderRadius.circular(12),
               splashColor: AppColors.gold.withOpacity(0.3),
@@ -233,6 +234,7 @@ class _HomeTabState extends State<HomeTab> {
                     horizontal: 24,
                     vertical: 14,
                   ),
+                  // Button content with loading indicator and text
                   child : Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
