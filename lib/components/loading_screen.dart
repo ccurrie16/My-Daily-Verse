@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// Branded loading screen with gold cross aesthetic
+// Branded loading screen with gold cross aesthetic
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
 
@@ -16,6 +16,7 @@ class _LoadingScreenState extends State<LoadingScreen>
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
 
+// Initialize animations for loading screen elements
   @override
   void initState() {
     super.initState();
@@ -23,14 +24,14 @@ class _LoadingScreenState extends State<LoadingScreen>
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-
+    // Fade and scale animations for loading screen elements
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
         curve: const Interval(0.0, 0.6, curve: Curves.easeIn),
       ),
     );
-
+    //
     _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
@@ -40,7 +41,7 @@ class _LoadingScreenState extends State<LoadingScreen>
 
     _controller.forward();
   }
-
+  // Dispose animation controller to free resources
   @override
   void dispose() {
     _controller.dispose();
@@ -52,7 +53,7 @@ class _LoadingScreenState extends State<LoadingScreen>
     const Color offwhite = Color(0xFFFAFBF8);
     const Color darkgold = Color(0xFFE0C869);
     const Color textSecondary = Color(0xFF7A7A7A);
-
+    
     return Scaffold(
       backgroundColor: offwhite,
       body: Center(
