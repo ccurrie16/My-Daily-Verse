@@ -6,24 +6,28 @@ import 'package:google_fonts/google_fonts.dart';
 
 class SavedVerses extends StatelessWidget {
   const SavedVerses({super.key});
-
+  // Page displaying list of saved verses with option to remove them
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
       body: ValueListenableBuilder<List<Verse>>(
         valueListenable: SavedVersesService.saved,
+        // Build UI based on the list of saved verses
         builder: (context, savedList, _) {
+          // Show message when no verses are saved
           if (savedList.isEmpty) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // Placeholder icon for no saved verses
                   Icon(
                     Icons.bookmark_border,
                     size: 80,
                     color: AppColors.darkgold.withOpacity(0.3),
                   ),
+                  // Message encouraging users to save verses when no saved verses are present
                   const SizedBox(height: 24),
                   Text(
                     "Start Building Your Collection",
@@ -34,6 +38,7 @@ class SavedVerses extends StatelessWidget {
                       color: AppColors.textPrimary,
                     ),
                   ),
+                  // Subtext encouraging users to save verses
                   const SizedBox(height:12),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 48),
@@ -51,14 +56,14 @@ class SavedVerses extends StatelessWidget {
               ),
             );
           }
-
+          // List view of saved verses with reference, text, and remove button
           return ListView.separated(
             padding: const EdgeInsets.all(16),
             itemCount: savedList.length,
             separatorBuilder: (_, __) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
               final v = savedList[index];
-
+              // Animated container for each saved verse with remove button
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.easeInOut,
@@ -84,6 +89,7 @@ class SavedVerses extends StatelessWidget {
                             ),
                           ),
                         ),
+                        // Remove from saved verses button
                         IconButton(
                           onPressed: () => SavedVersesService.remove(v),
                           icon: const Icon(Icons.bookmark_remove),

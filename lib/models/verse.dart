@@ -1,3 +1,4 @@
+  // Model class representing a Bible verse
 class Verse {
   final String reference;
   final String text;
@@ -13,7 +14,6 @@ class Verse {
       text: (json['text'] ?? '') as String,
     );
   }
-
   Map<String, dynamic> toJson() => {
         'ref': reference,
         'text': text,
