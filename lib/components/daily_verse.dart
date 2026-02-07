@@ -16,6 +16,7 @@ class DailyVerse extends StatelessWidget {
     required this.onToggleSave,
   });
 
+  // Widget for daily verse card with save/unsave function
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -42,12 +43,15 @@ class DailyVerse extends StatelessWidget {
             ),
           ],
         ),
+        // Column layout for verse text, reference, and save button
         child: Column(
           children: [
             Align(
+              // Save/Unsave button at the top right corner
               alignment: Alignment.topRight,
               child: IconButton(
                 onPressed: onToggleSave,
+                // AnimatedSwitcher for smooth icon transition
                 icon: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
                   transitionBuilder: (child, animation) {
@@ -68,7 +72,7 @@ class DailyVerse extends StatelessWidget {
             ),
 
             const SizedBox(height: 8),
-
+          // Verse text in the center of Daily Verse card
             Expanded(
               child: Center(
                 child: Text(
@@ -84,7 +88,7 @@ class DailyVerse extends StatelessWidget {
             ),
 
             const SizedBox(height: 12),
-
+            // Verse reference at the bottom of Daily Verse card
             Text(
               verse.reference,
               style: GoogleFonts.cormorantGaramond(
