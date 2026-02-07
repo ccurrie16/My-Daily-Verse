@@ -12,7 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 
 
-/// App Colors
+// App Colors
 class AppColors {
   AppColors._();
 
@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _selectedIndex = index;
     });
   }
-/ / Main build method for home screen with app bar, body, and bottom navigation
+  // Main build method for home screen with app bar, body, and bottom navigation
   @override
   Widget build(BuildContext context) {
     return Scaffold(
