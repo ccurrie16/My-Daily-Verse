@@ -50,12 +50,14 @@ class _LoadingScreenState extends State<LoadingScreen>
 
   @override
   Widget build(BuildContext context) {
-    const Color offwhite = Color(0xFFFAFBF8);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final Color backgroundColor = isDark ? const Color(0xFF1A1A1A) : const Color(0xFFFAFBF8);
     const Color darkgold = Color(0xFFE0C869);
-    const Color textSecondary = Color(0xFF7A7A7A);
+    final Color textSecondary = isDark ? const Color(0xFFB0B0B0) : const Color(0xFF7A7A7A);
+    final Color containerColor = isDark ? const Color(0xFF2B2B2B) : Colors.white;
     
     return Scaffold(
-      backgroundColor: offwhite,
+      backgroundColor: backgroundColor,
       body: Center(
         child: FadeTransition(
           opacity: _fadeAnimation,
@@ -68,11 +70,11 @@ class _LoadingScreenState extends State<LoadingScreen>
                 Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: containerColor,
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.08),
+                        color: Colors.black.withOpacity(isDark ? 0.4 : 0.08),
                         blurRadius: 20,
                         offset: const Offset(0, 8),
                       ),

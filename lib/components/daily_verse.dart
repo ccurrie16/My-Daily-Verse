@@ -26,18 +26,22 @@ class DailyVerse extends StatelessWidget {
         height: 400,
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: AppColors.offwhite,
+          color: AppColors.getSurface(context),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.softgold, width: 3),
+          border: Border.all(
+            color: isDark
+                ? AppColors.darkgold.withOpacity(0.3)
+                : AppColors.softgold,
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
+              color: Colors.black.withOpacity(isDark ? 0.4 : 0.08),
               blurRadius: 16,
               offset: const Offset(0, 6),
               spreadRadius: 1,
             ),
             BoxShadow(
-              color: AppColors.darkgold.withOpacity(0.05),
+              color: AppColors.darkgold.withOpacity(isDark ? 0.1 :0.05),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -80,7 +84,7 @@ class DailyVerse extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: GoogleFonts.cormorantGaramond(
                     fontSize: 20,
-                    color: AppColors.textPrimary,
+                    color: AppColors.getTextPrimary(context),
                     height: 1.6,
                   ),
                 ),
@@ -93,7 +97,7 @@ class DailyVerse extends StatelessWidget {
               verse.reference,
               style: GoogleFonts.cormorantGaramond(
                 fontSize: 18,
-                color: AppColors.textSecondary,
+                color: AppColors.getTextSecondary(context),
               ),
             ),
           ],

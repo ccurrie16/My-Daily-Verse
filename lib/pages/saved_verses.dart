@@ -9,8 +9,10 @@ class SavedVerses extends StatelessWidget {
   // Page displaying list of saved verses with option to remove them
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.getBackground(context),
       body: ValueListenableBuilder<List<Verse>>(
         valueListenable: SavedVersesService.saved,
         // Build UI based on the list of saved verses
@@ -35,7 +37,7 @@ class SavedVerses extends StatelessWidget {
                     style: GoogleFonts.cormorantGaramond(
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
+                      color: AppColors.getTextPrimary(context),
                     ),
                   ),
                   // Subtext encouraging users to save verses
@@ -47,7 +49,7 @@ class SavedVerses extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: GoogleFonts.cormorantGaramond(
                         fontSize: 16,
-                        color: AppColors.textSecondary,
+                        color: AppColors.getTextSecondary(context),
                         height: 1.5
                       ),
                     ),
@@ -69,9 +71,14 @@ class SavedVerses extends StatelessWidget {
                 curve: Curves.easeInOut,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.offwhite,
+                  color: AppColors.getSurface(context),
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: AppColors.softgold, width: 2),
+                  border: Border.all(
+                    color: isDark
+                     ? AppColors.darkgold.withOpacity(0.3) 
+                     : AppColors.softgold,
+                    width: 2,
+                  ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +110,7 @@ class SavedVerses extends StatelessWidget {
                     Text(
                       v.text,
                       style: GoogleFonts.cormorantGaramond(
-                        color: AppColors.textPrimary,
+                        color: AppColors.getTextPrimary(context),
                         height: 1.5,
                         fontSize: 20,
                       ),

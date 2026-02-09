@@ -1,22 +1,9 @@
 import 'package:flutter/material.dart';
 import '../theme_controller.dart';
 import '../services/reminder_settings_service.dart';
+import '.../pages/home_screen.dart';
 
-/// 🎨 App-wide colors (same as your HomeScreen)
-class AppColors {
-  AppColors._();
-
-  static const Color offwhite = Color(0xFFFAFBF8);
-  static const Color white = Color(0xFFFFFFFF);
-
-  static const Color gold = Color(0xFFFFF9B2);
-  static const Color softgold = Color(0xFFFFF8BF);
-  static const Color darkgold = Color(0xFFE0C869);
-
-  static const Color textPrimary = Color(0xFF2B2B2B);
-  static const Color textSecondary = Color(0xFF7A7A7A);
-}
-
+// Settings page allowing theme selection and daily reminder configuration
 class Settings extends StatefulWidget {
   final ThemeController themeController;
 
@@ -30,17 +17,20 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+
+  // State to track if theme dropdown is expanded
   bool _themeExpanded = false;
 
+  // Toggle the theme dropdown expansion
   void _toggleThemeExpanded() {
     setState(() => _themeExpanded = !_themeExpanded);
   }
-
+  // Select a theme and collapse the dropdown
   void _selectTheme(ThemeMode mode) {
     widget.themeController.setMode(mode);
-    setState(() => _themeExpanded = false); // collapse after choosing
-  }
+    setState(() => _themeExpanded = false);
 
+  // Get label for the current theme mode
   String _modeLabel(ThemeMode mode) {
     switch (mode) {
       case ThemeMode.system:
@@ -53,14 +43,14 @@ class _SettingsState extends State<Settings> {
   }
 
   String _twoDigits(int n) => n.toString().padLeft(2, '0');
-
+  // Get formatted time label
   String _timeLabel(TimeOfDay t) {
     final hour12 = t.hourOfPeriod == 0 ? 12 : t.hourOfPeriod;
     final ampm = t.period == DayPeriod.am ? 'AM' : 'PM';
     return '$hour12:${_twoDigits(t.minute)} $ampm';
   }
 
-  // ✨ 5. CUSTOM STYLED TIME PICKER - Matches gold/cream aesthetic
+  // Show custom themed time picker dialog
   Future<void> _showCustomTimePicker(TimeOfDay currentTime) async {
     final picked = await showTimePicker(
       context: context,
@@ -69,10 +59,10 @@ class _SettingsState extends State<Settings> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary: AppColors.darkgold, // Header background
-              onPrimary: Colors.white, // Header text
-              surface: AppColors.offwhite, // Dialog background
-              onSurface: AppColors.textPrimary, // Body text
+              primary: AppColors.darkgold,
+              onPrimary: Colors.white,
+              surface: AppColors.offwhite,
+              onSurface: AppColors.textPrimary,
             ),
             timePickerTheme: TimePickerThemeData(
               backgroundColor: AppColors.offwhite,
@@ -107,18 +97,23 @@ class _SettingsState extends State<Settings> {
         );
       },
     );
-
+    // Save the picked time if not null
     if (picked != null) {
       await ReminderSettingsService.setTime(picked);
     }
   }
 
   @override
+  // Build the settings page UI
   Widget build(BuildContext context) {
+    // Determine if dark mode is enabled
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: AppColors.offwhite,
+      // Set background color based on theme
+      backgroundColor: AppColors.getBackground(context),
       appBar: AppBar(
-        backgroundColor: AppColors.offwhite,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         centerTitle: true,
         iconTheme: const IconThemeData(color: AppColors.darkgold),
@@ -130,6 +125,7 @@ class _SettingsState extends State<Settings> {
           ),
         ),
       ),
+      // Body with list of settings options
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -138,13 +134,14 @@ class _SettingsState extends State<Settings> {
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w700,
-              color: AppColors.textSecondary,
+              color: AppColors.getTextSecondary(context),
             ),
           ),
           const SizedBox(height: 10),
 
-          /// ✅ Theme setting card
+          // Theme setting card
           _Card(
+            isDark: isDark,
             child: Column(
               children: [
                 InkWell(
@@ -155,36 +152,37 @@ class _SettingsState extends State<Settings> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // Left text
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            // Theme label
+                            Text(
                               'Theme',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
-                                color: AppColors.textPrimary,
+                                color: AppColors.getTextPrimary(context),
                               ),
                             ),
                             const SizedBox(height: 4),
                             Text(
+                              // Current theme mode label
                               _modeLabel(widget.themeController.mode),
                               style: const TextStyle(
                                 fontSize: 13,
-                                color: AppColors.textSecondary,
+                                color: AppColors.getTextSecondary(context),
                               ),
                             ),
                           ],
                         ),
 
-                        // Chevron
+                        // Dropdown arrow icon with rotation animation
                         AnimatedRotation(
                           turns: _themeExpanded ? 0.5 : 0.0,
                           duration: const Duration(milliseconds: 180),
-                          child: const Icon(
+                          child: Icon(
                             Icons.keyboard_arrow_down,
-                            color: AppColors.textSecondary,
+                            color: AppColors.getTextSecondary(context),
                           ),
                         ),
                       ],
@@ -192,35 +190,41 @@ class _SettingsState extends State<Settings> {
                   ),
                 ),
 
-                /// ✅ Sliding bar dropdown (simple + smooth)
+                // Dropdown area with theme options
                 _SlideDown(
                   expanded: _themeExpanded,
                   child: Column(
                     children: [
                       const SizedBox(height: 10),
 
-                      // subtle divider bar
+                      // Divider line
                       Container(
                         height: 1,
                         width: double.infinity,
-                        color: Colors.black.withOpacity(0.06),
+                        color: Colors.black.withOpacity(isDark ? 0.3 : 0.06),
                       ),
                       const SizedBox(height: 8),
-
+                        
                       _ThemeRow(
+                        // System theme option
                         label: 'System',
                         selected: widget.themeController.mode == ThemeMode.system,
                         onTap: () => _selectTheme(ThemeMode.system),
+                        isDark: isDark,
                       ),
                       _ThemeRow(
+                        // Light theme option
                         label: 'Light',
                         selected: widget.themeController.mode == ThemeMode.light,
                         onTap: () => _selectTheme(ThemeMode.light),
+                        isDark: isDark,
                       ),
                       _ThemeRow(
+                        // Dark theme option
                         label: 'Dark',
                         selected: widget.themeController.mode == ThemeMode.dark,
                         onTap: () => _selectTheme(ThemeMode.dark),
+                        isDark: isDark,
                       ),
                     ],
                   ),
@@ -230,18 +234,18 @@ class _SettingsState extends State<Settings> {
           ),
 
           const SizedBox(height: 8),
-
+          // Section label for reminders
           const Text(
             'Reminders',
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w700,
-              color: AppColors.textSecondary,
+              color: AppColors.getTextSecondary(context),
             ),
           ),
           const SizedBox(height: 10),
 
-          /// ✅ Daily Reminder card (toggle + time picker)
+          // Daily reminder setting card
           _Card(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,33 +255,36 @@ class _SettingsState extends State<Settings> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
+                    color: AppColors.getTextPrimary(context),
                   ),
                 ),
+                // Subtext explaining the reminder feature
                 const SizedBox(height: 6),
-                const Text(
+                Text(
                   'Get a notification each day to read your verse.',
                   style: TextStyle(
                     fontSize: 13,
-                    color: AppColors.textSecondary,
+                    color: AppColors.getTextSecondary(context),
                   ),
                 ),
                 const SizedBox(height: 12),
-
+                // Toggle switch to enable or disable daily reminders
                 ValueListenableBuilder<bool>(
                   valueListenable: ReminderSettingsService.enabled,
                   builder: (_, enabled, __) {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        // Label for the reminder toggle
+                        Text(
                           'Enable reminder',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.textPrimary,
+                            color: AppColors.getTextPrimary(context),
                           ),
                         ),
+                        // Switch to enable/disable reminders
                         Switch(
                           value: enabled,
                           activeColor: AppColors.darkgold,
@@ -289,7 +296,7 @@ class _SettingsState extends State<Settings> {
                 ),
 
                 const SizedBox(height: 4),
-
+                // Time picker option, only enabled if reminders are enabled
                 ValueListenableBuilder<bool>(
                   valueListenable: ReminderSettingsService.enabled,
                   builder: (_, enabled, __) {
@@ -297,6 +304,7 @@ class _SettingsState extends State<Settings> {
                       valueListenable: ReminderSettingsService.time,
                       builder: (_, t, __) {
                         return InkWell(
+                          // Disable CustomTimePicker if reminders are not enabled
                           onTap: enabled ? () => _showCustomTimePicker(t) : null,
                           borderRadius: BorderRadius.circular(12),
                           child: Container(
@@ -304,18 +312,22 @@ class _SettingsState extends State<Settings> {
                               vertical: 12,
                               horizontal: 12,
                             ),
+                            // Dim the time picker option if reminders are disabled and adjust border color accordingly
                             decoration: BoxDecoration(
                               color: enabled
-                                  ? AppColors.offwhite
-                                  : AppColors.offwhite.withOpacity(0.6),
+                                  ? AppColors.getSurface(context)
+                                  : AppColors.getSurface(context).withOpacity(0.6),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color: enabled
-                                    ? AppColors.softgold.withOpacity(0.5)
-                                    : Colors.transparent,
+                                    ?(isDark
+                                        ? AppColors.darkgold.withOpacity(0.3)
+                                        : AppColors.softgold.withOpacity(0.5))
+                                     : Colors.transparent,
                                 width: 1,
                               ),
                             ),
+                            // Row layout for time label and clock icon
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -325,10 +337,11 @@ class _SettingsState extends State<Settings> {
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     color: enabled
-                                        ? AppColors.textPrimary
-                                        : AppColors.textSecondary,
+                                        ? AppColors.getTextPrimary(context)
+                                        : AppColors.getTextSecondary(context),
                                   ),
                                 ),
+                                // Display the selected time with a clock icon, dimmed if disabled
                                 Row(
                                   children: [
                                     Text(
@@ -338,16 +351,17 @@ class _SettingsState extends State<Settings> {
                                         fontWeight: FontWeight.w800,
                                         color: enabled
                                             ? AppColors.darkgold
-                                            : AppColors.textSecondary,
+                                            : AppColors.getTextSecondary(context),
                                       ),
                                     ),
                                     const SizedBox(width: 4),
                                     Icon(
+                                      // Clock icon next to the time label, also dimmed if disabled
                                       Icons.access_time,
                                       size: 18,
                                       color: enabled
                                           ? AppColors.darkgold
-                                          : AppColors.textSecondary,
+                                          : AppColors.getTextSecondary(context),
                                     ),
                                   ],
                                 ),
@@ -368,23 +382,25 @@ class _SettingsState extends State<Settings> {
   }
 }
 
-/// 🧱 Simple reusable card matching your style
+// Reusable card widget with dynamic styling based on theme
 class _Card extends StatelessWidget {
   final Widget child;
+  final bool isDark;
 
-  const _Card({required this.child});
+  const _Card({required this.child, required this.isDark});
 
   @override
+  // Build the card with appropriate colors, borders, and shadows based on the theme
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: isDark ? AppColors.darkSurface : AppColors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withOpacity(isDark ? 0.30.04),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -395,7 +411,7 @@ class _Card extends StatelessWidget {
   }
 }
 
-/// ⬇️ Sliding expand/collapse area (the "bar slides down")
+// Custom widget to animate the expansion and collapse of the theme options dropdown
 class _SlideDown extends StatelessWidget {
   final bool expanded;
   final Widget child;
@@ -406,6 +422,7 @@ class _SlideDown extends StatelessWidget {
   });
 
   @override
+  // Build the animated dropdown using AnimatedAlign to smoothly transition the height
   Widget build(BuildContext context) {
     return ClipRect(
       child: AnimatedAlign(
@@ -419,19 +436,23 @@ class _SlideDown extends StatelessWidget {
   }
 }
 
-/// ☑️ One option row inside the dropdown area
+// Widget for each theme option row in the dropdown with selection indicator and tap handling
 class _ThemeRow extends StatelessWidget {
   final String label;
   final bool selected;
   final VoidCallback onTap;
+  final bool isDark;
 
   const _ThemeRow({
     required this.label,
     required this.selected,
     required this.onTap,
+    required this.isDark,
+
   });
 
   @override
+  // Build the theme option row with a radio button icon indicating selection and appropriate colors based on the theme
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(12),
@@ -442,7 +463,9 @@ class _ThemeRow extends StatelessWidget {
           children: [
             Icon(
               selected ? Icons.radio_button_checked : Icons.radio_button_off,
-              color: selected ? AppColors.darkgold : AppColors.textSecondary,
+              color: selected 
+                  ? AppColors.darkgold 
+                  : AppColors.getTextSecondary(context),
               size: 20,
             ),
             const SizedBox(width: 12),
@@ -451,7 +474,9 @@ class _ThemeRow extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: selected ? AppColors.darkgold : AppColors.textPrimary,
+                color: selected 
+                    ? AppColors.darkgold 
+                    : AppColors.getTextPrimary(context),
               ),
             ),
           ],
