@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../theme_controller.dart';
-import '../services/reminder_settings_service.dart';
-import '../pages/home_screen.dart';
+import 'package:bible/theme_controller.dart';
+import 'package:bible/services/reminder_settings_service.dart';
+import 'package:bible/pages/home_screen.dart';
 
 // Settings page allowing theme selection and daily reminder configuration
 class Settings extends StatefulWidget {

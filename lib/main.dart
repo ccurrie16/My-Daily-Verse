@@ -87,7 +87,7 @@ class _MyAppState extends State<MyApp> {
           foregroundColor: Color(0xFFE0C869),
           elevation: 0,
         ),
-        bottomNavigationBarTheme: const BottomNavigationBarTheme(
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Color(0xFFFAFBF8),
           selectedItemColor: Color(0xFFE0C869),
           unselectedItemColor: Color(0xFFE0C869),
@@ -112,7 +112,7 @@ class _MyAppState extends State<MyApp> {
           foregroundColor: Color(0xFFE0C869),
           elevation: 0,
         ),
-        bottomNavigationBarTheme: const BottomNavigationBarTheme(
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Color(0xFF2B2B2B),
           selectedItemColor: Color(0xFFE0C869),
           unselectedItemColor: Color(0xFFE0C869),

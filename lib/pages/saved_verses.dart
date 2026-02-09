@@ -37,11 +37,11 @@ class SavedVerses extends StatelessWidget {
                     style: GoogleFonts.cormorantGaramond(
                       fontSize: 24,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.getTextPrimary(context),
+                      color: AppColors.getPrimaryText(context),
                     ),
                   ),
                   // Subtext encouraging users to save verses
-                  const SizedBox(height:12),
+                  const SizedBox(height: 12),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 48),
                     child: Text(
@@ -49,7 +49,7 @@ class SavedVerses extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: GoogleFonts.cormorantGaramond(
                         fontSize: 16,
-                        color: AppColors.getTextSecondary(context),
+                        color: AppColors.getSecondaryText(context),
                         height: 1.5
                       ),
                     ),
@@ -110,7 +110,7 @@ class SavedVerses extends StatelessWidget {
                     Text(
                       v.text,
                       style: GoogleFonts.cormorantGaramond(
-                        color: AppColors.getTextPrimary(context),
+                        color: AppColors.getPrimaryText(context),
                         height: 1.5,
                         fontSize: 20,
                       ),
@@ -125,4 +125,3 @@ class SavedVerses extends StatelessWidget {
     );
   }
 }
-
