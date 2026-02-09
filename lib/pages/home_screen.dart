@@ -29,29 +29,33 @@ class AppColors {
   static const Color darkBackground = Color(0xFF1A1A1A);
   static const Color darkSurface = Color(0xFF2B2B2B);
   static const Color darkTextPrimary = Color(0xFFFAFBF8);
-  static const Color darkTextSecondary = Color(0xFFB0B0B);
+  static const Color darkTextSecondary = Color(0xFFB0B0B0);
+
+  static Color getBackground(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkBackground
+        : white;
+  }
+
+  static Color getSurface(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkSurface
+        : offwhite;
+  }
+
+  static Color getPrimaryText(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkTextPrimary
+        : textPrimary;
+  }
+
+  static Color getSecondaryText(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark
+        ? darkTextSecondary
+        : textSecondary;
+  }
 }
 
-static Color getBackground(BuildContext context) {
-  return Theme.of(context).brightness == Brightness.dark
-      ? AppColors.darkBackground
-      : AppColors.white;
-}
-static Color getSurface(BuildContext context) {
-  return Theme.of(context).brightness == Brightness.dark
-      ? AppColors.darkSurface
-      : AppColors.offwhite;
-}
-static Color getPrimaryText(BuildContext context) {
-  return Theme.of(context).brightness == Brightness.dark
-      ? AppColors.darkTextPrimary
-      : AppColors.textPrimary;
-}
-static Color getSecondaryText(BuildContext context) {
-  return Theme.of(context).brightness == Brightness.dark
-      ? AppColors.darkTextSecondary
-      : AppColors.textSecondary;
-}
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -75,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // Main build method for home screen with app bar, body, and bottom navigation
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
@@ -262,18 +266,18 @@ class _HomeTabState extends State<HomeTab> {
                     vertical: 14,
                   ),
                   // Button content with loading indicator and text
-                  child : Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if(_isGenerating)
-                      const SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      if (_isGenerating)
+                        const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
                         ),
-                      ),
                       if (_isGenerating) const SizedBox(width: 12),
                       Text(
                         _isGenerating ? 'Generating...' : 'Generate New Verse',

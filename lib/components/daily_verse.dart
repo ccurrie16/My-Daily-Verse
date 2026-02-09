@@ -19,6 +19,8 @@ class DailyVerse extends StatelessWidget {
   // Widget for daily verse card with save/unsave function
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return Padding(
       padding: const EdgeInsets.all(25),
       child: Container(
@@ -41,7 +43,7 @@ class DailyVerse extends StatelessWidget {
               spreadRadius: 1,
             ),
             BoxShadow(
-              color: AppColors.darkgold.withOpacity(isDark ? 0.1 :0.05),
+              color: AppColors.darkgold.withOpacity(isDark ? 0.1 : 0.05),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -65,8 +67,8 @@ class DailyVerse extends StatelessWidget {
                     );
                   },
                   child: Icon(
-                  isSaved ? Icons.bookmark : Icons.bookmark_border,
-                  key: ValueKey<bool>(isSaved),
+                    isSaved ? Icons.bookmark : Icons.bookmark_border,
+                    key: ValueKey<bool>(isSaved),
                   ),
                 ),
                 color: AppColors.darkgold,
@@ -84,7 +86,7 @@ class DailyVerse extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: GoogleFonts.cormorantGaramond(
                     fontSize: 20,
-                    color: AppColors.getTextPrimary(context),
+                    color: AppColors.getPrimaryText(context),
                     height: 1.6,
                   ),
                 ),
@@ -97,7 +99,7 @@ class DailyVerse extends StatelessWidget {
               verse.reference,
               style: GoogleFonts.cormorantGaramond(
                 fontSize: 18,
-                color: AppColors.getTextSecondary(context),
+                color: AppColors.getSecondaryText(context),
               ),
             ),
           ],

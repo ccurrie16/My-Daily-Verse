@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme_controller.dart';
 import '../services/reminder_settings_service.dart';
-import '.../pages/home_screen.dart';
+import '../pages/home_screen.dart';
 
 // Settings page allowing theme selection and daily reminder configuration
 class Settings extends StatefulWidget {
@@ -25,10 +25,12 @@ class _SettingsState extends State<Settings> {
   void _toggleThemeExpanded() {
     setState(() => _themeExpanded = !_themeExpanded);
   }
+  
   // Select a theme and collapse the dropdown
   void _selectTheme(ThemeMode mode) {
     widget.themeController.setMode(mode);
     setState(() => _themeExpanded = false);
+  }
 
   // Get label for the current theme mode
   String _modeLabel(ThemeMode mode) {
@@ -43,6 +45,7 @@ class _SettingsState extends State<Settings> {
   }
 
   String _twoDigits(int n) => n.toString().padLeft(2, '0');
+  
   // Get formatted time label
   String _timeLabel(TimeOfDay t) {
     final hour12 = t.hourOfPeriod == 0 ? 12 : t.hourOfPeriod;
@@ -129,12 +132,12 @@ class _SettingsState extends State<Settings> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text(
+          Text(
             'Appearance',
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w700,
-              color: AppColors.getTextSecondary(context),
+              color: AppColors.getSecondaryText(context),
             ),
           ),
           const SizedBox(height: 10),
@@ -161,16 +164,16 @@ class _SettingsState extends State<Settings> {
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
-                                color: AppColors.getTextPrimary(context),
+                                color: AppColors.getPrimaryText(context),
                               ),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               // Current theme mode label
                               _modeLabel(widget.themeController.mode),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 13,
-                                color: AppColors.getTextSecondary(context),
+                                color: AppColors.getSecondaryText(context),
                               ),
                             ),
                           ],
@@ -182,7 +185,7 @@ class _SettingsState extends State<Settings> {
                           duration: const Duration(milliseconds: 180),
                           child: Icon(
                             Icons.keyboard_arrow_down,
-                            color: AppColors.getTextSecondary(context),
+                            color: AppColors.getSecondaryText(context),
                           ),
                         ),
                       ],
@@ -235,27 +238,28 @@ class _SettingsState extends State<Settings> {
 
           const SizedBox(height: 8),
           // Section label for reminders
-          const Text(
+          Text(
             'Reminders',
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w700,
-              color: AppColors.getTextSecondary(context),
+              color: AppColors.getSecondaryText(context),
             ),
           ),
           const SizedBox(height: 10),
 
           // Daily reminder setting card
           _Card(
+            isDark: isDark,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Daily Reminder',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.getTextPrimary(context),
+                    color: AppColors.getPrimaryText(context),
                   ),
                 ),
                 // Subtext explaining the reminder feature
@@ -264,7 +268,7 @@ class _SettingsState extends State<Settings> {
                   'Get a notification each day to read your verse.',
                   style: TextStyle(
                     fontSize: 13,
-                    color: AppColors.getTextSecondary(context),
+                    color: AppColors.getSecondaryText(context),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -281,7 +285,7 @@ class _SettingsState extends State<Settings> {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.getTextPrimary(context),
+                            color: AppColors.getPrimaryText(context),
                           ),
                         ),
                         // Switch to enable/disable reminders
@@ -320,10 +324,10 @@ class _SettingsState extends State<Settings> {
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color: enabled
-                                    ?(isDark
+                                    ? (isDark
                                         ? AppColors.darkgold.withOpacity(0.3)
                                         : AppColors.softgold.withOpacity(0.5))
-                                     : Colors.transparent,
+                                    : Colors.transparent,
                                 width: 1,
                               ),
                             ),
@@ -337,8 +341,8 @@ class _SettingsState extends State<Settings> {
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     color: enabled
-                                        ? AppColors.getTextPrimary(context)
-                                        : AppColors.getTextSecondary(context),
+                                        ? AppColors.getPrimaryText(context)
+                                        : AppColors.getSecondaryText(context),
                                   ),
                                 ),
                                 // Display the selected time with a clock icon, dimmed if disabled
@@ -351,7 +355,7 @@ class _SettingsState extends State<Settings> {
                                         fontWeight: FontWeight.w800,
                                         color: enabled
                                             ? AppColors.darkgold
-                                            : AppColors.getTextSecondary(context),
+                                            : AppColors.getSecondaryText(context),
                                       ),
                                     ),
                                     const SizedBox(width: 4),
@@ -361,7 +365,7 @@ class _SettingsState extends State<Settings> {
                                       size: 18,
                                       color: enabled
                                           ? AppColors.darkgold
-                                          : AppColors.getTextSecondary(context),
+                                          : AppColors.getSecondaryText(context),
                                     ),
                                   ],
                                 ),
@@ -400,7 +404,7 @@ class _Card extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(isDark ? 0.30.04),
+            color: Colors.black.withOpacity(isDark ? 0.3 : 0.04),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -448,7 +452,6 @@ class _ThemeRow extends StatelessWidget {
     required this.selected,
     required this.onTap,
     required this.isDark,
-
   });
 
   @override
@@ -465,7 +468,7 @@ class _ThemeRow extends StatelessWidget {
               selected ? Icons.radio_button_checked : Icons.radio_button_off,
               color: selected 
                   ? AppColors.darkgold 
-                  : AppColors.getTextSecondary(context),
+                  : AppColors.getSecondaryText(context),
               size: 20,
             ),
             const SizedBox(width: 12),
@@ -476,7 +479,7 @@ class _ThemeRow extends StatelessWidget {
                 fontWeight: FontWeight.w600,
                 color: selected 
                     ? AppColors.darkgold 
-                    : AppColors.getTextPrimary(context),
+                    : AppColors.getPrimaryText(context),
               ),
             ),
           ],
