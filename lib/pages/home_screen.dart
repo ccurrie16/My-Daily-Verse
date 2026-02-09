@@ -25,8 +25,33 @@ class AppColors {
 
   static const Color textPrimary = Color(0xFF2B2B2B);
   static const Color textSecondary = Color(0xFF7A7A7A);
+
+  static const Color darkBackground = Color(0xFF1A1A1A);
+  static const Color darkSurface = Color(0xFF2B2B2B);
+  static const Color darkTextPrimary = Color(0xFFFAFBF8);
+  static const Color darkTextSecondary = Color(0xFFB0B0B);
 }
 
+static Color getBackground(BuildContext context) {
+  return Theme.of(context).brightness == Brightness.dark
+      ? AppColors.darkBackground
+      : AppColors.white;
+}
+static Color getSurface(BuildContext context) {
+  return Theme.of(context).brightness == Brightness.dark
+      ? AppColors.darkSurface
+      : AppColors.offwhite;
+}
+static Color getPrimaryText(BuildContext context) {
+  return Theme.of(context).brightness == Brightness.dark
+      ? AppColors.darkTextPrimary
+      : AppColors.textPrimary;
+}
+static Color getSecondaryText(BuildContext context) {
+  return Theme.of(context).brightness == Brightness.dark
+      ? AppColors.darkTextSecondary
+      : AppColors.textSecondary;
+}
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -50,11 +75,13 @@ class _HomeScreenState extends State<HomeScreen> {
   // Main build method for home screen with app bar, body, and bottom navigation
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.getBackground(context),
       // App bar with cross icon, title, and settings button
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: AppColors.getBackground(context),
         elevation: 0,
         centerTitle: true,
 
@@ -95,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: _pages[_selectedIndex],
       // Bottom navigation bar with Home and Saved tabs
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: AppColors.offwhite,
+        backgroundColor: isDark ? AppColors.darkSurface : AppColors.offwhite,
         currentIndex: _selectedIndex,
         onTap: _navigateBottomBar,
         selectedItemColor: AppColors.darkgold,
