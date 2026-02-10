@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:bible/theme_controller.dart';
 import 'package:bible/services/reminder_settings_service.dart';
 import 'package:bible/pages/home_screen.dart';
+import 'package:bible/services/auth_service.dart';
+import 'package:bible/pages/auth_screen.dart';
 
-// Settings page allowing theme selection and daily reminder configuration
+// Settings page allowing theme selection, daily reminder configuration, and sign out
 class Settings extends StatefulWidget {
   final ThemeController themeController;
 
@@ -105,12 +107,53 @@ class _SettingsState extends State<Settings> {
       await ReminderSettingsService.setTime(picked);
     }
   }
+  
+  // Handle sign out
+  Future<void> _handleSignOut() async {
+    // Show confirmation dialog
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Sign Out'),
+        content: const Text('Are you sure you want to sign out?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.red,
+            ),
+            child: const Text('Sign Out'),
+          ),
+        ],
+      ),
+    );
+    
+    if (confirmed == true) {
+      // Sign out user
+      await AuthService.signOut();
+      
+      if (mounted) {
+        // Navigate to auth screen
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const AuthScreen()),
+          (route) => false,
+        );
+      }
+    }
+  }
 
   @override
   // Build the settings page UI
   Widget build(BuildContext context) {
     // Determine if dark mode is enabled
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    // Get current user email for display
+    final userEmail = AuthService.currentUser?.email ?? 'Not signed in';
 
     return Scaffold(
       // Set background color based on theme
@@ -132,6 +175,62 @@ class _SettingsState extends State<Settings> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          // Account section
+          Text(
+            'Account',
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: AppColors.getSecondaryText(context),
+            ),
+          ),
+          const SizedBox(height: 10),
+          
+          // Account info card
+          _Card(
+            isDark: isDark,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Signed in as',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: AppColors.getSecondaryText(context),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  userEmail,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.getPrimaryText(context),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                // Sign out button
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: _handleSignOut,
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.red,
+                      side: const BorderSide(color: Colors.red),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    icon: const Icon(Icons.logout),
+                    label: const Text('Sign Out'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          const SizedBox(height: 24),
+          
           Text(
             'Appearance',
             style: TextStyle(
