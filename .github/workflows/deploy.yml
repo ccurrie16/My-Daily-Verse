@@ -27,3 +27,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build/web
+
+- name: Build Web
+  run: flutter build web --release --base-href "/My-Daily-Verse/" --dart-define=FIREBASE_WEB=true

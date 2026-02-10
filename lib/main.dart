@@ -18,7 +18,7 @@ import 'firebase_options.dart'
 // Initialize ThemeController
 final themeController = ThemeController();
 
-uture<void> main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   // Initialize Firebase with platform-specific options
