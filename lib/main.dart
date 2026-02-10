@@ -13,10 +13,19 @@ import 'components/loading_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bible/services/auth_service.dart';
 import 'package:bible/pages/auth_screen.dart';
+import 'firebase_options.dart'
 
 // Initialize ThemeController
 final themeController = ThemeController();
- 
+
+uture<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Firebase with platform-specific options
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+}
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
