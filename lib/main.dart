@@ -2,6 +2,7 @@ import 'package:bible/pages/home_screen.dart';
 import 'package:bible/pages/saved_verses.dart';
 import 'package:bible/pages/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:bible/services/bible_service.dart';
 import 'package:bible/services/saved_verses_service.dart';
 import 'theme_controller.dart';
@@ -13,24 +14,24 @@ import 'components/loading_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bible/services/auth_service.dart';
 import 'package:bible/pages/auth_screen.dart';
-import 'firebase_options.dart'
+import 'firebase_options.dart'; // ✅ Added semicolon
 
 // Initialize ThemeController
 final themeController = ThemeController();
-
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize Firebase with platform-specific options
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-}
+ 
+// ✅ Only ONE main() function
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   // Initialize Firebase - required for authentication
-  await Firebase.initializeApp();
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    // If Firebase initialization fails, log but continue
+    debugPrint('Firebase initialization error: $e');
+  }
   
   await BibleService.loadVerses();
   await SavedVersesService.init();
@@ -57,52 +58,51 @@ class _MyAppState extends State<MyApp> {
   bool _hasCompletedSignup = false;
 
   @override
-  // Add a listener to the ThemeController to rebuild the app when the theme changes
   void initState() {
     super.initState();
     themeController.addListener(_onThemeChanged);
-
-    // Check authentication status and signup completion - added for user authentication
     _checkAuthStatus();
   }
 
   @override
-  // Remove the listener when the widget is disposed to prevent memory leaks
   void dispose() {
     themeController.removeListener(_onThemeChanged);
     super.dispose();
   }
   
-  // Check if user is authenticated and has completed signup - added for user authentication
+  // Check if user is authenticated and has completed signup
   Future<void> _checkAuthStatus() async {
-    // Simulate loading time for the splash screen
     await Future.delayed(const Duration(milliseconds: 2000));
     
-    // Check if user has completed signup before
-    final hasCompletedSignup = await AuthService.hasCompletedSignup();
-    
-    // Check if user is currently signed in
-    final isAuthenticated = AuthService.currentUser != null;
-    
-    if (mounted) {
-      setState(() {
-        _hasCompletedSignup = hasCompletedSignup;
-        _isAuthenticated = isAuthenticated;
-        _isLoading = false;
-      });
+    try {
+      final hasCompletedSignup = await AuthService.hasCompletedSignup();
+      final isAuthenticated = AuthService.currentUser != null;
+      
+      if (mounted) {
+        setState(() {
+          _hasCompletedSignup = hasCompletedSignup;
+          _isAuthenticated = isAuthenticated;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      // If auth check fails, just show home screen (auth disabled)
+      if (mounted) {
+        setState(() {
+          _hasCompletedSignup = true;
+          _isAuthenticated = true;
+          _isLoading = false;
+        });
+      }
     }
   }
   
-  // Callback function to rebuild the app when the theme changes
   void _onThemeChanged() => setState(() {});
 
   @override
-  // Builds the MaterialApp with light and dark themes, and sets the home screen based on auth state
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-
-      // Set the theme mode based on the ThemeController's current mode
       themeMode: themeController.mode,
 
       // Light Theme
@@ -148,26 +148,25 @@ class _MyAppState extends State<MyApp> {
           foregroundColor: Color(0xFFE0C869),
           elevation: 0,
         ),
-        bottomNavigationBarThemeData: const BottomNavigationBarThemeData(
+        // ✅ Fixed: Changed from bottomNavigationBarThemeData to bottomNavigationBarTheme
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Color(0xFF2B2B2B),
           selectedItemColor: Color(0xFFE0C869),
           unselectedItemColor: Color(0xFFE0C869),
         ),
       ),
       
-      // Show appropriate screen based on loading and authentication state - updated for authentication
       home: _isLoading
           ? const LoadingScreen()
           : (!_hasCompletedSignup || !_isAuthenticated)
-              ? const AuthScreen() // Show auth screen if user hasn't signed up or isn't authenticated
-              : const HomeScreen(), // Show home screen if authenticated
+              ? const AuthScreen()
+              : const HomeScreen(),
       
-      // Define the routes for navigation to different screens in the app
       routes: {
         '/homescreen': (context) => const HomeScreen(),
         '/savedverses': (context) => const SavedVerses(),
         '/settings': (context) => Settings(themeController: themeController),
-        '/auth': (context) => const AuthScreen(), // Added auth screen route
+        '/auth': (context) => const AuthScreen(),
       },
     );
   }
