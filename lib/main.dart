@@ -9,11 +9,20 @@ import 'services/notification_service.dart';
 import 'services/reminder_settings_service.dart';
 import 'components/loading_screen.dart';
 
+// Firebase and Authentication imports - added for user authentication
+import 'package:firebase_core/firebase_core.dart';
+import 'package:bible/services/auth_service.dart';
+import 'package:bible/pages/auth_screen.dart';
+
 // Initialize ThemeController
 final themeController = ThemeController();
  
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Firebase - required for authentication
+  await Firebase.initializeApp();
+  
   await BibleService.loadVerses();
   await SavedVersesService.init();
   await NotificationService.init();
@@ -33,6 +42,10 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool _isLoading = true;
+  
+  // Track authentication state - added for user authentication
+  bool _isAuthenticated = false;
+  bool _hasCompletedSignup = false;
 
   @override
   // Add a listener to the ThemeController to rebuild the app when the theme changes
@@ -40,15 +53,8 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     themeController.addListener(_onThemeChanged);
 
-    // Simulate loading time for the splash screen
-    Future.delayed(const Duration(milliseconds: 2000), () {
-      // After loading is complete update the state to show the HomeScreen
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    });
+    // Check authentication status and signup completion - added for user authentication
+    _checkAuthStatus();
   }
 
   @override
@@ -57,11 +63,32 @@ class _MyAppState extends State<MyApp> {
     themeController.removeListener(_onThemeChanged);
     super.dispose();
   }
+  
+  // Check if user is authenticated and has completed signup - added for user authentication
+  Future<void> _checkAuthStatus() async {
+    // Simulate loading time for the splash screen
+    await Future.delayed(const Duration(milliseconds: 2000));
+    
+    // Check if user has completed signup before
+    final hasCompletedSignup = await AuthService.hasCompletedSignup();
+    
+    // Check if user is currently signed in
+    final isAuthenticated = AuthService.currentUser != null;
+    
+    if (mounted) {
+      setState(() {
+        _hasCompletedSignup = hasCompletedSignup;
+        _isAuthenticated = isAuthenticated;
+        _isLoading = false;
+      });
+    }
+  }
+  
   // Callback function to rebuild the app when the theme changes
   void _onThemeChanged() => setState(() {});
 
   @override
-  // Builds the MaterialApp with light and dark themes, and sets the home screen based on the loading state
+  // Builds the MaterialApp with light and dark themes, and sets the home screen based on auth state
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -112,20 +139,26 @@ class _MyAppState extends State<MyApp> {
           foregroundColor: Color(0xFFE0C869),
           elevation: 0,
         ),
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        bottomNavigationBarThemeData: const BottomNavigationBarThemeData(
           backgroundColor: Color(0xFF2B2B2B),
           selectedItemColor: Color(0xFFE0C869),
           unselectedItemColor: Color(0xFFE0C869),
         ),
       ),
-      // Show the LoadingScreen while the app is loading, then show the HomeScreen once loading is complete
-      home: _isLoading ? const LoadingScreen() : const HomeScreen(),
+      
+      // Show appropriate screen based on loading and authentication state - updated for authentication
+      home: _isLoading
+          ? const LoadingScreen()
+          : (!_hasCompletedSignup || !_isAuthenticated)
+              ? const AuthScreen() // Show auth screen if user hasn't signed up or isn't authenticated
+              : const HomeScreen(), // Show home screen if authenticated
       
       // Define the routes for navigation to different screens in the app
       routes: {
         '/homescreen': (context) => const HomeScreen(),
         '/savedverses': (context) => const SavedVerses(),
         '/settings': (context) => Settings(themeController: themeController),
+        '/auth': (context) => const AuthScreen(), // Added auth screen route
       },
     );
   }
