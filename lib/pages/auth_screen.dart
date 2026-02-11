@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bible/pages/home_screen.dart';
 import 'package:bible/services/auth_service.dart';
+import 'package:bible/services/saved_verses_service.dart';
 import 'package:bible/services/google_one_tap.dart' as one_tap;
 import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -47,6 +48,7 @@ class _AuthScreenState extends State<AuthScreen> {
         try {
           final credential = await AuthService.signInWithGoogleWeb(token);
           if (credential != null && mounted) {
+            await SavedVersesService.syncWithCloud();
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => const HomeScreen()),
             );
@@ -86,6 +88,8 @@ class _AuthScreenState extends State<AuthScreen> {
       }
       
       if (mounted) {
+        // Sync saved verses with cloud after successful login
+        await SavedVersesService.syncWithCloud();
         // Navigate to home screen after successful authentication
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => const HomeScreen()),
@@ -116,6 +120,8 @@ class _AuthScreenState extends State<AuthScreen> {
       final credential = await AuthService.signInWithGoogle();
       
       if (credential != null && mounted) {
+        // Sync saved verses with cloud after successful login
+        await SavedVersesService.syncWithCloud();
         // Navigate to home screen after successful authentication
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => const HomeScreen()),

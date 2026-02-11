@@ -77,7 +77,12 @@ class _MyAppState extends State<MyApp> {
     try {
       final hasCompletedSignup = await AuthService.hasCompletedSignup();
       final isAuthenticated = AuthService.currentUser != null;
-      
+
+      // Sync saved verses with Firestore if the user is logged in
+      if (isAuthenticated) {
+        await SavedVersesService.syncWithCloud();
+      }
+
       if (mounted) {
         setState(() {
           _hasCompletedSignup = hasCompletedSignup;
