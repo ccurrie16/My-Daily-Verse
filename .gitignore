@@ -43,3 +43,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+#github secrets
+echo "" >> .gitignore
+echo "# Firebase configuration - generated during build" >> .gitignore
+echo "lib/firebase_options.dart" >> .gitignore
