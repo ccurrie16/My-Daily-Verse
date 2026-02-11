@@ -9,20 +9,19 @@ class BibleService {
   static List<Verse> _verses = [];
   // Load verses from the JSON file in assets
   static Future<void> loadVerses() async {
-    final jsonString =
-        await rootBundle.loadString('assets/bible/KJV.json');
+    final jsonString = await rootBundle.loadString('assets/bible/KJV.json');
 
     final List<dynamic> data = jsonDecode(jsonString) as List<dynamic>;
     // Convert JSON data to a list of Verse objects
-    _verses = data
-        .map((e) => Verse.fromJson(e as Map<String, dynamic>))
-        .toList();
+    _verses =
+        data.map((e) => Verse.fromJson(e as Map<String, dynamic>)).toList();
   }
+
   // Get a random verse from the loaded verses
   static Verse getRandomVerse() {
     // Handle case where verses are not yet loaded
     if (_verses.isEmpty) {
-      return const Verse(reference: '', text: 'Verses not loaded yet.');
+      return Verse(reference: '', text: 'Verses not loaded yet.');
     }
     // Return a random verse
     return _verses[_rand.nextInt(_verses.length)];
@@ -32,7 +31,7 @@ class BibleService {
   static Verse getVerseOfTheDay(DateTime date) {
     // Handle case where verses are not yet loaded
     if (_verses.isEmpty) {
-      return const Verse(reference: '', text: 'Verses not loaded yet.');
+      return Verse(reference: '', text: 'Verses not loaded yet.');
     }
     // Calculate a unique key for the day
     final dayKey = date.year * 10000 + date.month * 100 + date.day;

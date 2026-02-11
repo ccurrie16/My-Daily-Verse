@@ -390,7 +390,7 @@ class _SettingsState extends State<Settings> {
                         // Switch to enable/disable reminders
                         Switch(
                           value: enabled,
-                          activeColor: AppColors.darkgold,
+                          activeThumbColor: AppColors.darkgold,
                           onChanged: (v) => ReminderSettingsService.setEnabled(v),
                         ),
                       ],

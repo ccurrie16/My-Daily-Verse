@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bible/models/verse.dart';
 import 'package:bible/services/cloud_saved_verses_service.dart';
 

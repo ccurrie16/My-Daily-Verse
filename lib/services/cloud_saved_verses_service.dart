@@ -182,7 +182,9 @@ class CloudSavedVersesService {
         .snapshots()
         .listen((snapshot) {
       for (final change in snapshot.docChanges) {
-        final data = {...change.doc.data(), 'id': change.doc.id};
+        final docData = change.doc.data();
+        if (docData == null) continue;
+        final data = {...docData, 'id': change.doc.id};
         final verse = Verse.fromJson(data);
 
         switch (change.type) {

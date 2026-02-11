@@ -7,15 +7,15 @@ class Verse {
   final DateTime? deletedAt; // null = not deleted, soft delete support
   final DateTime? syncedAt; // when last synced to cloud
 
-  const Verse({
+  Verse({
     required this.reference,
     required this.text,
     DateTime? createdAt,
     DateTime? modifiedAt,
     this.deletedAt,
     this.syncedAt,
-  })  : createdAt = createdAt ?? const DateTime(0),
-        modifiedAt = modifiedAt ?? const DateTime(0);
+  })  : createdAt = createdAt ?? DateTime.fromMillisecondsSinceEpoch(0),
+        modifiedAt = modifiedAt ?? DateTime.fromMillisecondsSinceEpoch(0);
 
   factory Verse.fromJson(Map<String, dynamic> json) {
     return Verse(
