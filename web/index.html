@@ -45,6 +45,8 @@
   </script>
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter_bootstrap.js" async></script>
+  <!-- Google Identity Services for One-Tap -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
   <!-- Loading indicator while app loads -->
@@ -74,6 +76,64 @@
   </div>
   
   <script>
+    // Google Identity Services callback
+    function handleCredentialResponse(response) {
+      try {
+        // The response contains the JWT ID token
+        const idToken = response.credential;
+        // Post the token back to the Flutter app
+        window.postMessage({ type: 'googleOneTap', token: idToken }, window.origin);
+      } catch (e) {
+        console.error('Error handling Google credential:', e);
+      }
+    }
+
+    // Initialize Google Identity Services when it's loaded
+    window.onloadGoogleIdentityServices = function() {
+      try {
+        google.accounts.id.initialize({
+          client_id: document.querySelector('meta[name="google-signin-client_id"]').getAttribute('content'),
+          callback: handleCredentialResponse
+        });
+      } catch (e) {
+        console.error('Error initializing Google Identity Services:', e);
+      }
+    };
+
+    // Launch the One-Tap prompt
+    window.launchOneTap = function() {
+      try {
+        if (google && google.accounts && google.accounts.id) {
+          google.accounts.id.prompt();
+        } else {
+          console.warn('Google Identity Services not loaded yet');
+        }
+      } catch (e) {
+        console.error('Error launching One-Tap:', e);
+      }
+    };
+
+    // Initialize when GIS script loads
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        if (typeof google !== 'undefined' && google.accounts) {
+          window.onloadGoogleIdentityServices();
+        }
+      });
+    } else {
+      if (typeof google !== 'undefined' && google.accounts) {
+        window.onloadGoogleIdentityServices();
+      }
+    }
+
+    // Fallback: Initialize after a short delay
+    setTimeout(function() {
+      if (typeof google !== 'undefined' && google.accounts && !window.gisInitialized) {
+        window.onloadGoogleIdentityServices();
+        window.gisInitialized = true;
+      }
+    }, 1000);
+
     window.addEventListener('flutter-first-frame', function () {
       const loading = document.getElementById('loading');
       if (loading) {

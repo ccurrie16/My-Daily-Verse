@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bible/pages/home_screen.dart';
 import 'package:bible/services/auth_service.dart';
+import 'package:bible/services/google_one_tap.dart' as one_tap;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 // Authentication screen for new users shown only on first app launch
 class AuthScreen extends StatefulWidget {
@@ -34,6 +36,32 @@ class _AuthScreenState extends State<AuthScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (kIsWeb) {
+      one_tap.addOneTapListener((token) async {
+        setState(() => _isLoading = true);
+        try {
+          final credential = await AuthService.signInWithGoogleWeb(token);
+          if (credential != null && mounted) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => const HomeScreen()),
+            );
+          }
+        } catch (e) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
+            );
+          }
+        } finally {
+          if (mounted) setState(() => _isLoading = false);
+        }
+      });
+    }
   }
 
   // Handle email/password authentication
@@ -369,7 +397,13 @@ class _AuthScreenState extends State<AuthScreen> {
                   width: double.infinity,
                   height: 50,
                   child: OutlinedButton.icon(
-                    onPressed: _isLoading ? null : _handleGoogleSignIn,
+                    onPressed: _isLoading
+                        ? null
+                        : (kIsWeb
+                            ? () {
+                                one_tap.promptOneTap();
+                              }
+                            : _handleGoogleSignIn),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: isDark ? Colors.white : Colors.black87,
                       side: BorderSide(

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 // Service to handle all authentication operations
 class AuthService {
@@ -72,24 +73,59 @@ class AuthService {
   // Sign in with Google
   static Future<UserCredential?> signInWithGoogle() async {
     try {
-      // Trigger the Google Sign In flow
+      // On web, prefer signing in with an ID token obtained from
+      // Google Identity Services (One-Tap). The web flow is handled
+      // by the frontend and will call `signInWithGoogleWeb` below.
+      if (kIsWeb) {
+        // Fall back to the google_sign_in package's web implementation
+        // which opens a popup.
+        final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+        if (googleUser == null) return null;
+
+        final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        final userCredential = await _auth.signInWithCredential(credential);
+        await markSignupCompleted();
+        return userCredential;
+      }
+
+      // Trigger the Google Sign In flow (mobile / desktop)
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      
+
       if (googleUser == null) {
         // User canceled the sign-in
         return null;
       }
-      
+
       // Obtain the auth details from the request
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      
+
       // Create a new credential
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      
+
       // Sign in to Firebase with the Google credential
+      final userCredential = await _auth.signInWithCredential(credential);
+      await markSignupCompleted();
+      return userCredential;
+    } on FirebaseAuthException catch (e) {
+      throw _getErrorMessage(e);
+    } catch (e) {
+      throw 'An unexpected error occurred. Please try again.';
+    }
+  }
+
+  // Sign in with an ID token obtained from Google Identity Services (One-Tap)
+  static Future<UserCredential?> signInWithGoogleWeb(String idToken) async {
+    try {
+      final credential = GoogleAuthProvider.credential(idToken: idToken);
       final userCredential = await _auth.signInWithCredential(credential);
       await markSignupCompleted();
       return userCredential;
