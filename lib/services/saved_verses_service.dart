@@ -2,81 +2,65 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bible/models/verse.dart';
-// Service to manage saved verses
+import 'package:bible/services/cloud_saved_verses_service.dart';
+
+/// Service to manage saved verses
+/// Delegates to CloudSavedVersesService for authenticated users
+/// Falls back to local-only storage for non-authenticated users
 class SavedVersesService {
   SavedVersesService._();
 
   static const String _key = 'saved_verses';
 
-  // ValueNotifier to track the list of saved verses
-  static final ValueNotifier<List<Verse>> saved =
-      ValueNotifier<List<Verse>>(<Verse>[]);
+  // ValueNotifier to track the list of saved verses (delegates to cloud service)
+  static ValueNotifier<List<Verse>> get saved => CloudSavedVersesService.saved;
 
-  // Initialize saved verses from SharedPreferences
+  // Initialize saved verses from cloud or local storage
   static Future<void> init() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(_key);
-    // If no saved verses, start with an empty list
-    if (raw == null || raw.trim().isEmpty) {
-      saved.value = <Verse>[];
-      return;
-    }
-    try {
-      // Decode the JSON string and convert it to a list of Verse objects
-      final List<dynamic> decoded = jsonDecode(raw) as List<dynamic>;
-      saved.value = decoded
-          .map((e) => Verse.fromJson(e as Map<String, dynamic>))
-          .toList();
-    } catch (_) {
-      // If storage ever gets corrupted, fail safely
-      saved.value = <Verse>[];
-    }
-  }
-  // Persist the current list of saved verses to SharedPreferences
-  static Future<void> _persist() async {
-    // Encode the list of Verse objects as a JSON string and save it
-    final prefs = await SharedPreferences.getInstance();
-    final String encoded = jsonEncode(
-      saved.value.map((v) => v.toJson()).toList(),
-    );
-    // Save the encoded string to SharedPreferences
-    await prefs.setString(_key, encoded);
+    await CloudSavedVersesService.init();
   }
 
   // Check if a verse is already saved
   static bool isSaved(Verse verse) {
-    return saved.value.any((v) => v.reference == verse.reference);
+    return CloudSavedVersesService.isSaved(verse);
   }
 
-  // Save if not saved, otherwise remove.
+  // Save if not saved, otherwise remove
   static Future<void> toggleSave(Verse verse) async {
-    final List<Verse> current = List<Verse>.from(saved.value);
-
-    final int index =
-        current.indexWhere((v) => v.reference == verse.reference);
-
-    if (index >= 0) {
-      current.removeAt(index);
-    } else {
-      current.insert(0, verse); // newest on top
-    }
-
-    saved.value = current;
-    await _persist();
+    await CloudSavedVersesService.toggleSave(verse);
   }
 
-  // Remove a specific verse from saved verses
+  // Remove a specific verse from saved verses (soft delete)
   static Future<void> remove(Verse verse) async {
-    final List<Verse> current = List<Verse>.from(saved.value)
-      ..removeWhere((v) => v.reference == verse.reference);
-
-    saved.value = current;
-    await _persist();
+    await CloudSavedVersesService.remove(verse);
   }
 
   // Clear all saved verses
   static Future<void> clearAll() async {
-    saved.value = <Verse>[];
-    await _persist();
+    await CloudSavedVersesService.clearAll();
+  }
+
+  // Add a verse to saved verses
+  static Future<void> add(Verse verse) async {
+    await CloudSavedVersesService.add(verse);
+  }
+
+  // Get deleted verses for recovery
+  static List<Verse> getDeletedVerses() =>
+      CloudSavedVersesService.getDeletedVerses();
+
+  // Recover a soft-deleted verse
+  static Future<void> recover(Verse deletedVerse) async {
+    await CloudSavedVersesService.recover(deletedVerse);
+  }
+
+  // Permanently delete a verse (hard delete)
+  static Future<void> hardDelete(Verse verse) async {
+    await CloudSavedVersesService.hardDelete(verse);
+  }
+
+  // Manually sync with cloud
+  static Future<void> syncWithCloud() async {
+    await CloudSavedVersesService.syncWithCloud();
   }
 }
