@@ -48,3 +48,6 @@ app.*.map.json
 echo "" >> .gitignore
 echo "# Firebase configuration - generated during build" >> .gitignore
 echo "lib/firebase_options.dart" >> .gitignore
+lib/firebase_options.dart
+firebase_options.dart
+**/firebase_options.dart
