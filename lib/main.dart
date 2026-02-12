@@ -2,7 +2,7 @@ import 'package:bible/pages/home_screen.dart';
 import 'package:bible/pages/saved_verses.dart';
 import 'package:bible/pages/settings.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+
 import 'package:bible/services/bible_service.dart';
 import 'package:bible/services/saved_verses_service.dart';
 import 'theme_controller.dart';

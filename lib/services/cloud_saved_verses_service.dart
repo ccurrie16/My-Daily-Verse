@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bible/models/verse.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+
 
 /// Service to manage saved verses with cloud synchronization
 /// Features:
@@ -22,7 +22,6 @@ class CloudSavedVersesService {
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   static final FirebaseAuth _auth = FirebaseAuth.instance;
-  static final Connectivity _connectivity = Connectivity();
 
   // ValueNotifier to track the list of saved verses
   static final ValueNotifier<List<Verse>> saved =
@@ -242,7 +241,7 @@ class CloudSavedVersesService {
   static Future<void> add(Verse verse) async {
     final now = DateTime.now();
     final newVerse = verse.copyWith(
-      createdAt: verse.createdAt == DateTime(0) ? now : verse.createdAt,
+      createdAt: verse.createdAt == DateTime.fromMillisecondsSinceEpoch(0) ? now : verse.createdAt,
       modifiedAt: now,
       deletedAt: null, // Restore if previously deleted
     );

@@ -1,3 +1,6 @@
+// Sentinel value to distinguish "not provided" from "set to null"
+const Object _sentinel = Object();
+
 // Model class representing a Bible verse
 class Verse {
   final String reference;
@@ -46,21 +49,26 @@ class Verse {
       };
 
   // Create a copy with modified fields
+  // Uses sentinel to allow explicitly setting nullable fields to null
   Verse copyWith({
     String? reference,
     String? text,
     DateTime? createdAt,
     DateTime? modifiedAt,
-    DateTime? deletedAt,
-    DateTime? syncedAt,
+    Object? deletedAt = _sentinel,
+    Object? syncedAt = _sentinel,
   }) {
     return Verse(
       reference: reference ?? this.reference,
       text: text ?? this.text,
       createdAt: createdAt ?? this.createdAt,
       modifiedAt: modifiedAt ?? this.modifiedAt,
-      deletedAt: deletedAt ?? this.deletedAt,
-      syncedAt: syncedAt ?? this.syncedAt,
+      deletedAt: identical(deletedAt, _sentinel)
+          ? this.deletedAt
+          : deletedAt as DateTime?,
+      syncedAt: identical(syncedAt, _sentinel)
+          ? this.syncedAt
+          : syncedAt as DateTime?,
     );
   }
 }

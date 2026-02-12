@@ -8,8 +8,6 @@ import 'package:bible/services/cloud_saved_verses_service.dart';
 class SavedVersesService {
   SavedVersesService._();
 
-  static const String _key = 'saved_verses';
-
   // ValueNotifier to track the list of saved verses (delegates to cloud service)
   static ValueNotifier<List<Verse>> get saved => CloudSavedVersesService.saved;
 

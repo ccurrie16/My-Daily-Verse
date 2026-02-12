@@ -57,7 +57,7 @@ class ReminderSettingsService {
     await NotificationService.scheduleDailyReminder(
       time: time.value,
       title: 'Daily Verse',
-      body: 'Tap to read today’s verse.',
+      body: "Tap to read today's verse.",
     );
   }
 }
