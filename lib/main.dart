@@ -10,20 +10,19 @@ import 'services/notification_service.dart';
 import 'services/reminder_settings_service.dart';
 import 'components/loading_screen.dart';
 
-// Firebase and Authentication imports - added for user authentication
+// Firebase and Authentication imports 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bible/services/auth_service.dart';
 import 'package:bible/pages/auth_screen.dart';
-import 'firebase_options.dart'; // ✅ Added semicolon
+import 'firebase_options.dart';
 
 // Initialize ThemeController
 final themeController = ThemeController();
- 
-// ✅ Only ONE main() function
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Initialize Firebase - required for authentication
+  // Initialize Firebase
   try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -53,7 +52,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _isLoading = true;
   
-  // Track authentication state - added for user authentication
+  // Track authentication state
   bool _isAuthenticated = false;
   bool _hasCompletedSignup = false;
 
@@ -148,7 +147,6 @@ class _MyAppState extends State<MyApp> {
           foregroundColor: Color(0xFFE0C869),
           elevation: 0,
         ),
-        // ✅ Fixed: Changed from bottomNavigationBarThemeData to bottomNavigationBarTheme
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Color(0xFF2B2B2B),
           selectedItemColor: Color(0xFFE0C869),
