@@ -46,8 +46,9 @@ app.*.map.json
 
 #github secrets
 echo "" >> .gitignore
-echo "# Firebase configuration - generated during build" >> .gitignore
+echo "# Firebase configuration - keep local only" >> .gitignore
 echo "lib/firebase_options.dart" >> .gitignore
-lib/firebase_options.dart
-firebase_options.dart
-**/firebase_options.dart
+echo "firebase_options.dart" >> .gitignore
+echo "**/firebase_options.dart" >> .gitignore
+echo "android/app/google-services.json" >> .gitignore
+echo "ios/Runner/GoogleService-Info.plist" >> .gitignore
