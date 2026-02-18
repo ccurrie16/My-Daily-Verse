@@ -1,7 +1,7 @@
 import 'package:bible/pages/home_screen.dart';
 import 'package:bible/pages/settings.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bible/services/bible_service.dart';
 import 'package:bible/services/saved_verses_service.dart';
 import 'theme_controller.dart';
@@ -9,7 +9,7 @@ import 'services/notification_service.dart';
 import 'services/reminder_settings_service.dart';
 import 'components/loading_screen.dart';
 
-// Firebase and Authentication imports 
+// Firebase and Authentication imports
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bible/services/auth_service.dart';
 import 'package:bible/pages/auth_screen.dart';
@@ -49,17 +49,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _isLoading = true;
-  
-  // Track authentication state
-  bool _isAuthenticated = false;
-  bool _hasCompletedSignup = false;
-
   @override
   void initState() {
     super.initState();
     themeController.addListener(_onThemeChanged);
-    _checkAuthStatus();
   }
 
   @override
@@ -67,33 +60,7 @@ class _MyAppState extends State<MyApp> {
     themeController.removeListener(_onThemeChanged);
     super.dispose();
   }
-  
-  // Check if user is authenticated and has completed signup
-  Future<void> _checkAuthStatus() async {
-    
-    try {
-      final hasCompletedSignup = await AuthService.hasCompletedSignup();
-      final isAuthenticated = AuthService.currentUser != null;
-      
-      if (mounted) {
-        setState(() {
-          _hasCompletedSignup = hasCompletedSignup;
-          _isAuthenticated = isAuthenticated;
-          _isLoading = false;
-        });
-      }
-    } catch (e) {
-      // If auth check fails, just show home screen (auth disabled)
-      if (mounted) {
-        setState(() {
-          _hasCompletedSignup = true;
-          _isAuthenticated = true;
-          _isLoading = false;
-        });
-      }
-    }
-  }
-  
+
   void _onThemeChanged() => setState(() {});
 
   @override
@@ -152,11 +119,15 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       
-      home: _isLoading
-          ? const LoadingScreen()
-          : (!_hasCompletedSignup || !_isAuthenticated)
-              ? const AuthScreen()
-              : const HomeScreen(),
+      home: StreamBuilder<User?>(
+        stream: AuthService.authStateChanges,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const LoadingScreen();
+          }
+          return snapshot.hasData ? const HomeScreen() : const AuthScreen();
+        },
+      ),
       
       routes: {
         '/homescreen': (context) => const HomeScreen(),

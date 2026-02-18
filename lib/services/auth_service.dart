@@ -101,20 +101,6 @@ class AuthService {
     }
   }
 
-  // Sign in with an ID token obtained from Google Identity Services (One-Tap)
-  static Future<UserCredential?> signInWithGoogleWeb(String idToken) async {
-    try {
-      final credential = GoogleAuthProvider.credential(idToken: idToken);
-      final userCredential = await _auth.signInWithCredential(credential);
-      await markSignupCompleted();
-      return userCredential;
-    } on FirebaseAuthException catch (e) {
-      throw _getErrorMessage(e);
-    } catch (e) {
-      throw 'An unexpected error occurred. Please try again.';
-    }
-  }
-  
   // Sign out
   static Future<void> signOut() async {
     await _auth.signOut();
