@@ -44,11 +44,9 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-#github secrets
-echo "" >> .gitignore
-echo "# Firebase configuration - keep local only" >> .gitignore
-echo "lib/firebase_options.dart" >> .gitignore
-echo "firebase_options.dart" >> .gitignore
-echo "**/firebase_options.dart" >> .gitignore
-echo "android/app/google-services.json" >> .gitignore
-echo "ios/Runner/GoogleService-Info.plist" >> .gitignore
+# Firebase configuration - keep local only
+lib/firebase_options.dart
+firebase_options.dart
+**/firebase_options.dart
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist

@@ -1,5 +1,4 @@
 import 'package:bible/pages/home_screen.dart';
-import 'package:bible/pages/saved_verses.dart';
 import 'package:bible/pages/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -161,7 +160,6 @@ class _MyAppState extends State<MyApp> {
       
       routes: {
         '/homescreen': (context) => const HomeScreen(),
-        '/savedverses': (context) => const SavedVerses(),
         '/settings': (context) => Settings(themeController: themeController),
         '/auth': (context) => const AuthScreen(),
       },
