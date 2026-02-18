@@ -71,7 +71,6 @@ class _MyAppState extends State<MyApp> {
   
   // Check if user is authenticated and has completed signup
   Future<void> _checkAuthStatus() async {
-    await Future.delayed(const Duration(milliseconds: 2000));
     
     try {
       final hasCompletedSignup = await AuthService.hasCompletedSignup();
