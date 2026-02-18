@@ -250,7 +250,8 @@ class _AuthScreenState extends State<AuthScreen> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
                             }
-                            if (!value.contains('@')) {
+                            final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+                            if (!emailRegex.hasMatch(value)) {
                               return 'Please enter a valid email';
                             }
                             return null;
