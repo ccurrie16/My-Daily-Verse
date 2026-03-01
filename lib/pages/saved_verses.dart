@@ -3,6 +3,7 @@ import 'package:bible/models/verse.dart';
 import 'package:bible/pages/home_screen.dart';
 import 'package:bible/services/saved_verses_service.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:share_plus/share_plus.dart';
 
 class SavedVerses extends StatelessWidget {
   const SavedVerses({super.key});
@@ -95,6 +96,16 @@ class SavedVerses extends StatelessWidget {
                                 fontSize: 18,
                             ),
                           ),
+                        ),
+                        // Share verse button
+                        IconButton(
+                          onPressed: () => Share.share(
+                            '"${v.text}"\n— ${v.reference}',
+                          ),
+                          icon: const Icon(Icons.share),
+                          color: AppColors.darkgold,
+                          tooltip: "Share",
+                          iconSize: 24,
                         ),
                         // Remove from saved verses button
                         IconButton(

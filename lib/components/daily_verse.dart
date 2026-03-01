@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:bible/pages/home_screen.dart';
 import 'package:bible/models/verse.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:share_plus/share_plus.dart';
 
 
 class DailyVerse extends StatelessWidget {
@@ -52,29 +53,41 @@ class DailyVerse extends StatelessWidget {
         // Column layout for verse text, reference, and save button
         child: Column(
           children: [
-            Align(
-              // Save/Unsave button at the top right corner
-              alignment: Alignment.topRight,
-              child: IconButton(
-                onPressed: onToggleSave,
-                // AnimatedSwitcher for smooth icon transition
-                icon: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  transitionBuilder: (child, animation) {
-                    return ScaleTransition(
-                      scale: animation,
-                      child: child,
-                    );
-                  },
-                  child: Icon(
-                    isSaved ? Icons.bookmark : Icons.bookmark_border,
-                    key: ValueKey<bool>(isSaved),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                // Share button
+                IconButton(
+                  onPressed: () => Share.share(
+                    '"${verse.text}"\n— ${verse.reference}',
                   ),
+                  icon: const Icon(Icons.share),
+                  color: AppColors.darkgold,
+                  iconSize: 28,
+                  tooltip: "Share",
                 ),
-                color: AppColors.darkgold,
-                iconSize: 28,
-                tooltip: isSaved ? "Unsave" : "Save",
-              ),
+                // Save/Unsave button at the top right corner
+                IconButton(
+                  onPressed: onToggleSave,
+                  // AnimatedSwitcher for smooth icon transition
+                  icon: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder: (child, animation) {
+                      return ScaleTransition(
+                        scale: animation,
+                        child: child,
+                      );
+                    },
+                    child: Icon(
+                      isSaved ? Icons.bookmark : Icons.bookmark_border,
+                      key: ValueKey<bool>(isSaved),
+                    ),
+                  ),
+                  color: AppColors.darkgold,
+                  iconSize: 28,
+                  tooltip: isSaved ? "Unsave" : "Save",
+                ),
+              ],
             ),
 
             const SizedBox(height: 8),
