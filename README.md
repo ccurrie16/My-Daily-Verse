@@ -6,7 +6,7 @@ A Flutter app that displays a Verse of the Day and allows users to generate rand
 - 1,100+ verses
 - Verse of the Day
 - Random verse generator
-- Bookmark your favorite verses
+- Bookmark & share your favorite verses
 - Offline Bible JSON
 - Daily reminders
 - Light / Dark / System theme
