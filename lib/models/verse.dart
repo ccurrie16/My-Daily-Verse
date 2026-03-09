@@ -17,22 +17,23 @@ class Verse {
   })  : createdAt = createdAt ?? DateTime.fromMillisecondsSinceEpoch(0),
         modifiedAt = modifiedAt ?? DateTime.fromMillisecondsSinceEpoch(0);
 
+  static DateTime? _parseDate(dynamic value) {
+    if (value == null) return null;
+    if (value is String) return DateTime.parse(value);
+    if (value is DateTime) return value;
+    // Handle Firestore Timestamp
+    try { return (value as dynamic).toDate() as DateTime; } catch (_) {}
+    return null;
+  }
+
   factory Verse.fromJson(Map<String, dynamic> json) {
     return Verse(
       reference: (json['ref'] ?? '') as String,
       text: (json['text'] ?? '') as String,
-      createdAt: json['createdAt'] != null
-          ? DateTime.parse(json['createdAt'] as String)
-          : DateTime.now(),
-      modifiedAt: json['modifiedAt'] != null
-          ? DateTime.parse(json['modifiedAt'] as String)
-          : DateTime.now(),
-      deletedAt: json['deletedAt'] != null
-          ? DateTime.parse(json['deletedAt'] as String)
-          : null,
-      syncedAt: json['syncedAt'] != null
-          ? DateTime.parse(json['syncedAt'] as String)
-          : null,
+      createdAt: _parseDate(json['createdAt']) ?? DateTime.now(),
+      modifiedAt: _parseDate(json['modifiedAt']) ?? DateTime.now(),
+      deletedAt: _parseDate(json['deletedAt']),
+      syncedAt: _parseDate(json['syncedAt']),
     );
   }
 

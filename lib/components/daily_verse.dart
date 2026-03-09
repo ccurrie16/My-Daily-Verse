@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
 
 
-class DailyVerse extends StatelessWidget {
+class DailyVerse extends StatefulWidget {
   final Verse verse;
   final bool isSaved;
   final VoidCallback onToggleSave;
@@ -17,11 +17,27 @@ class DailyVerse extends StatelessWidget {
     required this.onToggleSave,
   });
 
+  @override
+  State<DailyVerse> createState() => _DailyVerseState();
+}
+
+class _DailyVerseState extends State<DailyVerse> {
+  final _shareButtonKey = GlobalKey();
+
+  void _handleShare() {
+    final box = _shareButtonKey.currentContext?.findRenderObject() as RenderBox?;
+    final rect = box != null ? box.localToGlobal(Offset.zero) & box.size : null;
+    Share.share(
+      '"${widget.verse.text}"\n— ${widget.verse.reference}',
+      sharePositionOrigin: rect,
+    );
+  }
+
   // Widget for daily verse card with save/unsave function
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Padding(
       padding: const EdgeInsets.all(25),
       child: Container(
@@ -58,9 +74,8 @@ class DailyVerse extends StatelessWidget {
               children: [
                 // Share button
                 IconButton(
-                  onPressed: () => Share.share(
-                    '"${verse.text}"\n— ${verse.reference}',
-                  ),
+                  key: _shareButtonKey,
+                  onPressed: _handleShare,
                   icon: const Icon(Icons.share),
                   color: AppColors.darkgold,
                   iconSize: 28,
@@ -68,7 +83,7 @@ class DailyVerse extends StatelessWidget {
                 ),
                 // Save/Unsave button at the top right corner
                 IconButton(
-                  onPressed: onToggleSave,
+                  onPressed: widget.onToggleSave,
                   // AnimatedSwitcher for smooth icon transition
                   icon: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
@@ -79,13 +94,13 @@ class DailyVerse extends StatelessWidget {
                       );
                     },
                     child: Icon(
-                      isSaved ? Icons.bookmark : Icons.bookmark_border,
-                      key: ValueKey<bool>(isSaved),
+                      widget.isSaved ? Icons.bookmark : Icons.bookmark_border,
+                      key: ValueKey<bool>(widget.isSaved),
                     ),
                   ),
                   color: AppColors.darkgold,
                   iconSize: 28,
-                  tooltip: isSaved ? "Unsave" : "Save",
+                  tooltip: widget.isSaved ? "Unsave" : "Save",
                 ),
               ],
             ),
@@ -95,7 +110,7 @@ class DailyVerse extends StatelessWidget {
             Expanded(
               child: Center(
                 child: Text(
-                  verse.text,
+                  widget.verse.text,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.cormorantGaramond(
                     fontSize: 20,
@@ -109,7 +124,7 @@ class DailyVerse extends StatelessWidget {
             const SizedBox(height: 12),
             // Verse reference at the bottom of Daily Verse card
             Text(
-              verse.reference,
+              widget.verse.reference,
               style: GoogleFonts.cormorantGaramond(
                 fontSize: 18,
                 color: AppColors.getSecondaryText(context),
