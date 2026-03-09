@@ -10,12 +10,12 @@ plugins {
 }
 
 android {
-    namespace = "com.example.bible"
+    namespace = "com.codycurrie.mydailyverse"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
     defaultConfig {
-        applicationId = "com.example.bible"
+        applicationId = "com.codycurrie.mydailyverse"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
