@@ -1,4 +1,12 @@
 import org.gradle.jvm.toolchain.JavaLanguageVersion
+import java.util.Properties
+import java.io.FileInputStream
+
+val keyPropertiesFile = rootProject.file("key.properties")
+val keyProperties = Properties()
+if (keyPropertiesFile.exists()) {
+    keyProperties.load(FileInputStream(keyPropertiesFile))
+}
 
 plugins {
     id("com.android.application")

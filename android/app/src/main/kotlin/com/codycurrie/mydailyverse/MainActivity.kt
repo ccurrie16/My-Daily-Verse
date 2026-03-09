@@ -1,4 +1,4 @@
-package com.example.bible
+package com.codycurrie.mydailyverse
 
 import io.flutter.embedding.android.FlutterActivity
 

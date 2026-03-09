@@ -1,13 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.bible">
+    package="com.codycurrie.mydailyverse">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
     <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
 
     <application
         android:name="${applicationName}"
-        android:label="bible"
+        android:label="My Daily Verse"
         android:icon="@mipmap/ic_launcher">
 
         <activity
