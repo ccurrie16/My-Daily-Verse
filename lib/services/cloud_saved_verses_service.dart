@@ -143,14 +143,12 @@ class CloudSavedVersesService {
     for (final local in saved.value) {
       processed.add(local.reference);
 
-      // Find matching cloud verse
-      final cloudVerse = cloudVerses.firstWhere(
-        (v) => v.reference == local.reference,
-        orElse: () => local,
-      );
+      // Find matching cloud verse; if none exists keep local as-is
+      final matches = cloudVerses.where((v) => v.reference == local.reference);
+      final Verse? cloudVerse = matches.isEmpty ? null : matches.first;
 
-      // Conflict resolution: last-write-wins with timestamp
-      if (cloudVerse.reference == local.reference) {
+      if (cloudVerse != null) {
+        // Conflict resolution: last-write-wins with timestamp
         final winner = local.modifiedAt.isAfter(cloudVerse.modifiedAt)
             ? local
             : cloudVerse;
