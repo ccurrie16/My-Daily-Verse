@@ -47,7 +47,7 @@ class CloudSavedVersesService {
         _listenToCloudUpdates();
       }
     } catch (e) {
-      print('Error initializing CloudSavedVersesService: $e');
+      debugPrint('Error initializing CloudSavedVersesService: $e');
       // Fail safely - use cached data
     }
   }
@@ -77,7 +77,7 @@ class CloudSavedVersesService {
           .map((v) => Verse.fromJson(v as Map<String, dynamic>))
           .toList();
     } catch (e) {
-      print('Error loading cache: $e');
+      debugPrint('Error loading cache: $e');
       saved.value = <Verse>[];
       deletedVerses.value = <Verse>[];
     }
@@ -93,7 +93,7 @@ class CloudSavedVersesService {
       };
       await prefs.setString(_localCacheKey, jsonEncode(data));
     } catch (e) {
-      print('Error saving to cache: $e');
+      debugPrint('Error saving to cache: $e');
     }
   }
 
@@ -125,7 +125,7 @@ class CloudSavedVersesService {
 
       isSynced.value = true;
     } catch (e) {
-      print('Error syncing with cloud: $e');
+      debugPrint('Error syncing with cloud: $e');
       isSynced.value = false;
     }
   }
@@ -303,7 +303,7 @@ class CloudSavedVersesService {
           .toList();
       await _saveToCache();
     } catch (e) {
-      print('Error hard deleting verse: $e');
+      debugPrint('Error hard deleting verse: $e');
     }
   }
 
@@ -378,7 +378,7 @@ class CloudSavedVersesService {
 
       await batch.commit();
     } catch (e) {
-      print('Error syncing to cloud: $e');
+      debugPrint('Error syncing to cloud: $e');
     }
   }
 
@@ -400,7 +400,7 @@ class CloudSavedVersesService {
 
       await prefs.setString(_pendingSyncKey, jsonEncode(pending));
     } catch (e) {
-      print('Error adding to pending sync: $e');
+      debugPrint('Error adding to pending sync: $e');
     }
   }
 
@@ -424,7 +424,7 @@ class CloudSavedVersesService {
       // Clear pending operations after successful sync
       await prefs.setString(_pendingSyncKey, jsonEncode([]));
     } catch (e) {
-      print('Error processing pending operations: $e');
+      debugPrint('Error processing pending operations: $e');
     }
   }
 
