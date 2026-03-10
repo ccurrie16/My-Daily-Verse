@@ -1,3 +1,9 @@
+// Sentinel constant used by Verse.copyWith to distinguish "pass null" from "omit"
+class _Unset {
+  const _Unset();
+  static const value = _Unset();
+}
+
 // Model class representing a Bible verse
 class Verse {
   final String reference;
@@ -46,22 +52,24 @@ class Verse {
         'syncedAt': syncedAt?.toIso8601String(),
       };
 
-  // Create a copy with modified fields
+  // Create a copy with modified fields.
+  // For nullable fields (deletedAt, syncedAt), omitting the parameter preserves the
+  // existing value; passing null explicitly clears it.
   Verse copyWith({
     String? reference,
     String? text,
     DateTime? createdAt,
     DateTime? modifiedAt,
-    DateTime? deletedAt,
-    DateTime? syncedAt,
+    Object? deletedAt = _Unset.value,
+    Object? syncedAt = _Unset.value,
   }) {
     return Verse(
       reference: reference ?? this.reference,
       text: text ?? this.text,
       createdAt: createdAt ?? this.createdAt,
       modifiedAt: modifiedAt ?? this.modifiedAt,
-      deletedAt: deletedAt ?? this.deletedAt,
-      syncedAt: syncedAt ?? this.syncedAt,
+      deletedAt: identical(deletedAt, _Unset.value) ? this.deletedAt : deletedAt as DateTime?,
+      syncedAt: identical(syncedAt, _Unset.value) ? this.syncedAt : syncedAt as DateTime?,
     );
   }
 }
