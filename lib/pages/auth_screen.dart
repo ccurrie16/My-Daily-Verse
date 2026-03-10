@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_daily_verse/pages/home_screen.dart';
 import 'package:my_daily_verse/services/auth_service.dart';
 
 // Authentication screen for new users shown only on first app launch
@@ -56,13 +55,8 @@ class _AuthScreenState extends State<AuthScreen> {
           password: _passwordController.text,
         );
       }
-      
-      if (mounted) {
-        // Navigate to home screen after successful authentication
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-        );
-      }
+      // Navigation is handled by the StreamBuilder in main.dart reacting to
+      // the auth state change — no manual push needed here.
     } catch (e) {
       if (mounted) {
         // Show error message
@@ -85,14 +79,9 @@ class _AuthScreenState extends State<AuthScreen> {
     setState(() => _isLoading = true);
     
     try {
-      final credential = await AuthService.signInWithGoogle();
-      
-      if (credential != null && mounted) {
-        // Navigate to home screen after successful authentication
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-        );
-      }
+      await AuthService.signInWithGoogle();
+      // Navigation is handled by the StreamBuilder in main.dart reacting to
+      // the auth state change — no manual push needed here.
     } catch (e) {
       if (mounted) {
         // Show error message
