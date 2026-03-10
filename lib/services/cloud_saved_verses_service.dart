@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,6 +33,9 @@ class CloudSavedVersesService {
   // ValueNotifier to track deleted verses (for recovery)
   static final ValueNotifier<List<Verse>> deletedVerses =
       ValueNotifier<List<Verse>>(<Verse>[]);
+
+  // Stored subscription so it can be cancelled before re-subscribing
+  static StreamSubscription<QuerySnapshot>? _cloudSubscription;
 
   /// Initialize the service and load verses from cache/cloud
   static Future<void> init() async {
@@ -173,7 +177,9 @@ class CloudSavedVersesService {
 
     final user = _auth.currentUser!;
 
-    _firestore
+    // Cancel any existing subscription before creating a new one to prevent leaks
+    _cloudSubscription?.cancel();
+    _cloudSubscription = _firestore
         .collection('users')
         .doc(user.uid)
         .collection(_collectionName)
