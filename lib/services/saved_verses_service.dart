@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:bible/models/verse.dart';
-import 'package:bible/services/cloud_saved_verses_service.dart';
+import 'package:my_daily_verse/models/verse.dart';
+import 'package:my_daily_verse/services/cloud_saved_verses_service.dart';
 
 /// Service to manage saved verses
 /// Delegates to CloudSavedVersesService for authenticated users

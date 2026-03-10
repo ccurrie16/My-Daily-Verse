@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:bible/pages/home_screen.dart';
-import 'package:bible/services/auth_service.dart';
+import 'package:my_daily_verse/pages/home_screen.dart';
+import 'package:my_daily_verse/services/auth_service.dart';
 
 // Authentication screen for new users shown only on first app launch
 class AuthScreen extends StatefulWidget {
@@ -406,7 +406,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32),
                   child: Text(
-                    'By continuing, you agree to receive daily verse notifications',
+                    'By continuing, you agree to our Privacy Policy and Terms of Service.',
                     textAlign: TextAlign.center,
                     style: GoogleFonts.cormorantGaramond(
                       fontSize: 12,

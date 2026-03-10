@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:bible/pages/home_screen.dart';
-import 'package:bible/models/verse.dart';
+import 'package:my_daily_verse/pages/home_screen.dart';
+import 'package:my_daily_verse/models/verse.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
 

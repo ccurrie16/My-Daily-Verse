@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:bible/theme_controller.dart';
-import 'package:bible/services/reminder_settings_service.dart';
-import 'package:bible/pages/home_screen.dart';
-import 'package:bible/services/auth_service.dart';
-import 'package:bible/pages/auth_screen.dart';
+import 'package:my_daily_verse/theme_controller.dart';
+import 'package:my_daily_verse/services/reminder_settings_service.dart';
+import 'package:my_daily_verse/pages/home_screen.dart';
+import 'package:my_daily_verse/services/auth_service.dart';
+import 'package:my_daily_verse/pages/auth_screen.dart';
 
 // Settings page allowing theme selection, daily reminder configuration, and sign out
 class Settings extends StatefulWidget {

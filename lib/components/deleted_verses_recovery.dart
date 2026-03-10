@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:bible/models/verse.dart';
-import 'package:bible/services/saved_verses_service.dart';
-import 'package:bible/services/cloud_saved_verses_service.dart';
+import 'package:my_daily_verse/models/verse.dart';
+import 'package:my_daily_verse/services/saved_verses_service.dart';
+import 'package:my_daily_verse/services/cloud_saved_verses_service.dart';
 
 /// Widget to display and manage deleted verses for recovery
 class DeletedVersesRecoveryWidget extends StatefulWidget {

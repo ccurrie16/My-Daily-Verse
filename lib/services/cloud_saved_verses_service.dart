@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:bible/models/verse.dart';
+import 'package:my_daily_verse/models/verse.dart';
 
 /// Service to manage saved verses with cloud synchronization
 /// Features:

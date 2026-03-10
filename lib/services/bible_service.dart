@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/services.dart';
-import 'package:bible/models/verse.dart';
+import 'package:my_daily_verse/models/verse.dart';
 
 // Service to load and provide Bible verses
 class BibleService {

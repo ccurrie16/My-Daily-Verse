@@ -1,9 +1,9 @@
-import 'package:bible/pages/home_screen.dart';
-import 'package:bible/pages/settings.dart';
+import 'package:my_daily_verse/pages/home_screen.dart';
+import 'package:my_daily_verse/pages/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:bible/services/bible_service.dart';
-import 'package:bible/services/saved_verses_service.dart';
+import 'package:my_daily_verse/services/bible_service.dart';
+import 'package:my_daily_verse/services/saved_verses_service.dart';
 import 'theme_controller.dart';
 import 'services/notification_service.dart';
 import 'services/reminder_settings_service.dart';
@@ -11,8 +11,8 @@ import 'components/loading_screen.dart';
 
 // Firebase and Authentication imports
 import 'package:firebase_core/firebase_core.dart';
-import 'package:bible/services/auth_service.dart';
-import 'package:bible/pages/auth_screen.dart';
+import 'package:my_daily_verse/services/auth_service.dart';
+import 'package:my_daily_verse/pages/auth_screen.dart';
 import 'firebase_options.dart';
 
 // Initialize ThemeController

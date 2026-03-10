@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:bible/models/verse.dart';
-import 'package:bible/services/bible_service.dart';
-import 'package:bible/services/saved_verses_service.dart';
+import 'package:my_daily_verse/models/verse.dart';
+import 'package:my_daily_verse/services/bible_service.dart';
+import 'package:my_daily_verse/services/saved_verses_service.dart';
 
-import 'package:bible/components/daily_verse.dart';
-import 'package:bible/pages/saved_verses.dart';
+import 'package:my_daily_verse/components/daily_verse.dart';
+import 'package:my_daily_verse/pages/saved_verses.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
