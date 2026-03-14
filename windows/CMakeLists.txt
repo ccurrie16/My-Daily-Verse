@@ -2,6 +2,9 @@
 cmake_minimum_required(VERSION 3.14)
 project(bible LANGUAGES CXX)
 
+# Allow Firebase C++ SDK which uses older cmake_minimum_required versions
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
+
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
 set(BINARY_NAME "bible")
