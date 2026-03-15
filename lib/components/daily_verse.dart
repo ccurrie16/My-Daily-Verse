@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:my_daily_verse/pages/home_screen.dart';
 import 'package:my_daily_verse/models/verse.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:share_plus/share_plus.dart';
-
-
 class DailyVerse extends StatefulWidget {
   final Verse verse;
   final bool isSaved;
@@ -22,17 +19,6 @@ class DailyVerse extends StatefulWidget {
 }
 
 class _DailyVerseState extends State<DailyVerse> {
-  final _shareButtonKey = GlobalKey();
-
-  void _handleShare() {
-    final box = _shareButtonKey.currentContext?.findRenderObject() as RenderBox?;
-    final rect = box != null ? box.localToGlobal(Offset.zero) & box.size : null;
-    Share.share(
-      '"${widget.verse.text}"\n— ${widget.verse.reference}',
-      sharePositionOrigin: rect,
-    );
-  }
-
   // Widget for daily verse card with save/unsave function
   @override
   Widget build(BuildContext context) {
@@ -72,19 +58,9 @@ class _DailyVerseState extends State<DailyVerse> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                // Share button
-                IconButton(
-                  key: _shareButtonKey,
-                  onPressed: _handleShare,
-                  icon: const Icon(Icons.share),
-                  color: AppColors.darkgold,
-                  iconSize: 28,
-                  tooltip: "Share",
-                ),
-                // Save/Unsave button at the top right corner
+                // Save/Unsave button at top right
                 IconButton(
                   onPressed: widget.onToggleSave,
-                  // AnimatedSwitcher for smooth icon transition
                   icon: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 300),
                     transitionBuilder: (child, animation) {
@@ -106,7 +82,7 @@ class _DailyVerseState extends State<DailyVerse> {
             ),
 
             const SizedBox(height: 8),
-          // Verse text in the center of Daily Verse card
+            // Verse text in the center of Daily Verse card
             Expanded(
               child: Center(
                 child: Text(
