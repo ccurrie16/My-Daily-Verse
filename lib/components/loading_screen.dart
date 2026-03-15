@@ -75,7 +75,7 @@ class _LoadingScreenState extends State<LoadingScreen>
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(isDark ? 0.4 : 0.08),
+                        color: Colors.black.withValues(alpha: isDark ? 0.4 : 0.08),
                         blurRadius: 20,
                         offset: const Offset(0, 8),
                       ),

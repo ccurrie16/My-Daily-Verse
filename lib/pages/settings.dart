@@ -303,7 +303,7 @@ class _SettingsState extends State<Settings> {
                       Container(
                         height: 1,
                         width: double.infinity,
-                        color: Colors.black.withOpacity(isDark ? 0.3 : 0.06),
+                        color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.06),
                       ),
                       const SizedBox(height: 8),
                         
@@ -419,13 +419,13 @@ class _SettingsState extends State<Settings> {
                             decoration: BoxDecoration(
                               color: enabled
                                   ? AppColors.getSurface(context)
-                                  : AppColors.getSurface(context).withOpacity(0.6),
+                                  : AppColors.getSurface(context).withValues(alpha: 0.6),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color: enabled
                                     ? (isDark
-                                        ? AppColors.darkgold.withOpacity(0.3)
-                                        : AppColors.softgold.withOpacity(0.5))
+                                        ? AppColors.darkgold.withValues(alpha: 0.3)
+                                        : AppColors.softgold.withValues(alpha: 0.5))
                                     : Colors.transparent,
                                 width: 1,
                               ),
@@ -503,7 +503,7 @@ class _Card extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(isDark ? 0.3 : 0.04),
+            color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.04),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),

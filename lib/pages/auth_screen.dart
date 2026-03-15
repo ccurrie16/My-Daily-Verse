@@ -124,7 +124,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(isDark ? 0.4 : 0.08),
+                        color: Colors.black.withValues(alpha: isDark ? 0.4 : 0.08),
                         blurRadius: 20,
                         offset: const Offset(0, 8),
                       ),
@@ -175,7 +175,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(isDark ? 0.3 : 0.05),
+                        color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.05),
                         blurRadius: 15,
                         offset: const Offset(0, 5),
                       ),
@@ -200,7 +200,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: textSecondary.withOpacity(0.3)),
+                              borderSide: BorderSide(color: textSecondary.withValues(alpha: 0.3)),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -245,7 +245,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: textSecondary.withOpacity(0.3)),
+                              borderSide: BorderSide(color: textSecondary.withValues(alpha: 0.3)),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -329,7 +329,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   children: [
                     Expanded(
                       child: Divider(
-                        color: textSecondary.withOpacity(0.3),
+                        color: textSecondary.withValues(alpha: 0.3),
                         thickness: 1,
                       ),
                     ),
@@ -345,7 +345,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                     Expanded(
                       child: Divider(
-                        color: textSecondary.withOpacity(0.3),
+                        color: textSecondary.withValues(alpha: 0.3),
                         thickness: 1,
                       ),
                     ),
@@ -363,7 +363,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     style: OutlinedButton.styleFrom(
                       foregroundColor: isDark ? Colors.white : Colors.black87,
                       side: BorderSide(
-                        color: textSecondary.withOpacity(0.3),
+                        color: textSecondary.withValues(alpha: 0.3),
                         width: 1.5,
                       ),
                       shape: RoundedRectangleBorder(

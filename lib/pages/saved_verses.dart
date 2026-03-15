@@ -28,7 +28,7 @@ class SavedVerses extends StatelessWidget {
                   Icon(
                     Icons.bookmark_border,
                     size: 80,
-                    color: AppColors.darkgold.withOpacity(0.3),
+                    color: AppColors.darkgold.withValues(alpha: 0.3),
                   ),
                   // Message encouraging users to save verses when no saved verses are present
                   const SizedBox(height: 24),
@@ -76,7 +76,7 @@ class SavedVerses extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
                     color: isDark
-                     ? AppColors.darkgold.withOpacity(0.3) 
+                     ? AppColors.darkgold.withValues(alpha: 0.3) 
                      : AppColors.softgold,
                     width: 2,
                   ),

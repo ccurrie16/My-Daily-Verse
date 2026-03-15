@@ -199,17 +199,17 @@ class _HomeTabState extends State<HomeTab> {
               // Disable button while generating new verse to prevent multiple taps
               onTap: _isGenerating ? null : _generateNewVerse,
               borderRadius: BorderRadius.circular(12),
-              splashColor: AppColors.gold.withOpacity(0.3),
-              highlightColor: AppColors.gold.withOpacity(0.2),
+              splashColor: AppColors.gold.withValues(alpha: 0.3),
+              highlightColor: AppColors.gold.withValues(alpha: 0.2),
               child: Ink(
                 decoration: BoxDecoration(
                   color: _isGenerating
-                    ? AppColors.darkgold.withOpacity(0.7)
+                    ? AppColors.darkgold.withValues(alpha: 0.7)
                     : AppColors.darkgold,
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.darkgold.withOpacity(0.3),
+                      color: AppColors.darkgold.withValues(alpha: 0.3),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),

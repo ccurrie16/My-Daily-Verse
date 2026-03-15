@@ -35,18 +35,18 @@ class _DailyVerseState extends State<DailyVerse> {
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isDark
-                ? AppColors.darkgold.withOpacity(0.3)
+                ? AppColors.darkgold.withValues(alpha: 0.3)
                 : AppColors.softgold,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(isDark ? 0.4 : 0.08),
+              color: Colors.black.withValues(alpha: isDark ? 0.4 : 0.08),
               blurRadius: 16,
               offset: const Offset(0, 6),
               spreadRadius: 1,
             ),
             BoxShadow(
-              color: AppColors.darkgold.withOpacity(isDark ? 0.1 : 0.05),
+              color: AppColors.darkgold.withValues(alpha: isDark ? 0.1 : 0.05),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
