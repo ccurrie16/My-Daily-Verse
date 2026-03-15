@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_daily_verse/models/verse.dart';
-import 'package:my_daily_verse/pages/home_screen.dart';
+import 'package:my_daily_verse/app_colors.dart';
 import 'package:my_daily_verse/services/saved_verses_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';

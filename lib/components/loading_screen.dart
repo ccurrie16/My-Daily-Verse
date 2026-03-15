@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_daily_verse/app_colors.dart';
 
 // Branded loading screen with gold cross aesthetic
 class LoadingScreen extends StatefulWidget {
@@ -51,10 +52,10 @@ class _LoadingScreenState extends State<LoadingScreen>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final Color backgroundColor = isDark ? const Color(0xFF1A1A1A) : const Color(0xFFFAFBF8);
-    const Color darkgold = Color(0xFFE0C869);
-    final Color textSecondary = isDark ? const Color(0xFFB0B0B0) : const Color(0xFF7A7A7A);
-    final Color containerColor = isDark ? const Color(0xFF2B2B2B) : Colors.white;
+    final Color backgroundColor = isDark ? AppColors.darkBackground : AppColors.offwhite;
+    const Color darkgold = AppColors.darkgold;
+    final Color textSecondary = isDark ? AppColors.darkTextSecondary : AppColors.textSecondary;
+    final Color containerColor = isDark ? AppColors.darkSurface : AppColors.white;
     
     return Scaffold(
       backgroundColor: backgroundColor,

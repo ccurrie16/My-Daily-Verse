@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_daily_verse/app_colors.dart';
 import 'package:my_daily_verse/models/verse.dart';
 import 'package:my_daily_verse/services/saved_verses_service.dart';
 import 'package:my_daily_verse/services/cloud_saved_verses_service.dart';
@@ -18,12 +19,10 @@ class _DeletedVersesRecoveryWidgetState
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final backgroundColor =
-        isDark ? const Color(0xFF1A1A1A) : const Color(0xFFFAFBF8);
-    const darkgold = Color(0xFFE0C869);
-    final textSecondary =
-        isDark ? const Color(0xFFB0B0B0) : const Color(0xFF7A7A7A);
-    final containerColor = isDark ? const Color(0xFF2B2B2B) : Colors.white;
+    final backgroundColor = isDark ? AppColors.darkBackground : AppColors.offwhite;
+    const darkgold = AppColors.darkgold;
+    final textSecondary = isDark ? AppColors.darkTextSecondary : AppColors.textSecondary;
+    final containerColor = isDark ? AppColors.darkSurface : AppColors.white;
 
     return ValueListenableBuilder<List<Verse>>(
       valueListenable: CloudSavedVersesService.deletedVerses,

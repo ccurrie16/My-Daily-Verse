@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_daily_verse/theme_controller.dart';
 import 'package:my_daily_verse/services/reminder_settings_service.dart';
-import 'package:my_daily_verse/pages/home_screen.dart';
+import 'package:my_daily_verse/app_colors.dart';
 import 'package:my_daily_verse/services/auth_service.dart';
 import 'package:my_daily_verse/pages/auth_screen.dart';
 
