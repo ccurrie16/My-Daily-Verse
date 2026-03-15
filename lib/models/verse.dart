@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 // Sentinel constant used by Verse.copyWith to distinguish "pass null" from "omit"
 class _Unset {
   const _Unset();
@@ -28,7 +30,9 @@ class Verse {
     if (value is String) return DateTime.parse(value);
     if (value is DateTime) return value;
     // Handle Firestore Timestamp
-    try { return (value as dynamic).toDate() as DateTime; } catch (_) {}
+    try { return (value as dynamic).toDate() as DateTime; } catch (e) {
+      debugPrint('Failed to parse date value: $e');
+    }
     return null;
   }
 
