@@ -200,7 +200,7 @@ class _HomeTabState extends State<HomeTab> {
     _currentVerse = BibleService.getVerseOfTheDay(DateTime.now());
   }
   // Generate a new random verse and update state
-  void _generateNewVerse() async {
+  Future<void> _generateNewVerse() async {
     setState(() {
       _isGenerating = true;
     });
