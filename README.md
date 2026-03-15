@@ -5,9 +5,9 @@
 </p>
 
 <p align="center">
-  <img src="screenshots/MDV_Home.png" width="30%" style="border: 1px solid #e0c869; border-radius: 12px;" />
+  <img src="screenshots/MDV_Home.png" width="30%" />
   &nbsp;&nbsp;&nbsp;
-  <img src="screenshots/MDV_Saved.png" width="30%" style="border: 1px solid #e0c869; border-radius: 12px;" />
+  <img src="screenshots/MDV_Saved.png" width="30%" />
 </p>
 
 ---
