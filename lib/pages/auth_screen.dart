@@ -74,6 +74,25 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
+  // Handle guest sign in
+  Future<void> _handleGuestSignIn() async {
+    setState(() => _isLoading = true);
+    try {
+      await AuthService.signInAnonymously();
+      if (mounted) {
+        Navigator.of(context).pushNamedAndRemoveUntil('/homescreen', (_) => false);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
   // Handle Google Sign In
   Future<void> _handleGoogleSignIn() async {
     setState(() => _isLoading = true);
@@ -390,7 +409,21 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
                 
                 const SizedBox(height: 16),
-                
+
+                // Continue as Guest button
+                TextButton(
+                  onPressed: _isLoading ? null : _handleGuestSignIn,
+                  child: Text(
+                    'Continue as Guest',
+                    style: TextStyle(
+                      color: textSecondary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
                 // Privacy notice
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32),

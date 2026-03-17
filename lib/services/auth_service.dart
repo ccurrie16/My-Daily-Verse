@@ -18,6 +18,9 @@ class AuthService {
   
   // Get current user
   static User? get currentUser => _auth.currentUser;
+
+  // Check if the current user is anonymous (guest)
+  static bool get isAnonymous => _auth.currentUser?.isAnonymous ?? false;
   
   // Check if user has completed signup before
   static Future<bool> hasCompletedSignup() async {
@@ -98,6 +101,15 @@ class AuthService {
       throw _getErrorMessage(e);
     } catch (e) {
       throw 'An unexpected error occurred. Please try again.';
+    }
+  }
+
+  // Sign in anonymously (guest mode)
+  static Future<UserCredential?> signInAnonymously() async {
+    try {
+      return await _auth.signInAnonymously();
+    } catch (e) {
+      throw 'Unable to continue as guest. Please try again.';
     }
   }
 

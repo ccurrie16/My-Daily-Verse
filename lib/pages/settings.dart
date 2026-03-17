@@ -209,21 +209,34 @@ class _SettingsState extends State<Settings> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                // Sign out button
+                // Sign out / Sign in button
                 SizedBox(
                   width: double.infinity,
-                  child: OutlinedButton.icon(
-                    onPressed: _handleSignOut,
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.red,
-                      side: const BorderSide(color: Colors.red),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    icon: const Icon(Icons.logout),
-                    label: const Text('Sign Out'),
-                  ),
+                  child: AuthService.isAnonymous
+                      ? OutlinedButton.icon(
+                          onPressed: () => Navigator.pushNamed(context, '/auth'),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: AppColors.darkgold,
+                            side: const BorderSide(color: AppColors.darkgold),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          icon: const Icon(Icons.login),
+                          label: const Text('Sign In'),
+                        )
+                      : OutlinedButton.icon(
+                          onPressed: _handleSignOut,
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.red,
+                            side: const BorderSide(color: Colors.red),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          icon: const Icon(Icons.logout),
+                          label: const Text('Sign Out'),
+                        ),
                 ),
               ],
             ),

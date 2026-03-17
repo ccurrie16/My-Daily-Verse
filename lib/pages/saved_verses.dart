@@ -4,6 +4,7 @@ import 'package:my_daily_verse/app_colors.dart';
 import 'package:my_daily_verse/services/saved_verses_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:my_daily_verse/services/auth_service.dart';
 
 class SavedVerses extends StatelessWidget {
   const SavedVerses({super.key});
@@ -11,6 +12,52 @@ class SavedVerses extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    if (AuthService.isAnonymous) {
+      return Scaffold(
+        backgroundColor: AppColors.getBackground(context),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.bookmark_border, size: 80, color: AppColors.darkgold.withValues(alpha: 0.3)),
+              const SizedBox(height: 24),
+              Text(
+                'Sign In to Save Verses',
+                style: GoogleFonts.cormorantGaramond(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.getPrimaryText(context),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 48),
+                child: Text(
+                  'Create an account to save verses and sync them across devices.',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.cormorantGaramond(
+                    fontSize: 16,
+                    color: AppColors.getSecondaryText(context),
+                    height: 1.5,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () => Navigator.pushNamed(context, '/auth'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.darkgold,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                child: const Text('Sign In', style: TextStyle(fontWeight: FontWeight.w600)),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       backgroundColor: AppColors.getBackground(context),
@@ -99,8 +146,8 @@ class SavedVerses extends StatelessWidget {
                         ),
                         // Share verse button
                         IconButton(
-                          onPressed: () => Share.share(
-                            '"${v.text}"\n— ${v.reference}',
+                          onPressed: () => SharePlus.instance.share(
+                            ShareParams(text: '"${v.text}"\n— ${v.reference}'),
                           ),
                           icon: const Icon(Icons.share),
                           color: AppColors.darkgold,

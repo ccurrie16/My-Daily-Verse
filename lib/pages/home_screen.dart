@@ -10,6 +10,7 @@ import 'package:my_daily_verse/pages/saved_verses.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_daily_verse/app_colors.dart';
+import 'package:my_daily_verse/services/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -181,7 +182,30 @@ class _HomeTabState extends State<HomeTab> {
               verse: _currentVerse,
               isSaved: isSaved,
               onToggleSave: () {
-                SavedVersesService.toggleSave(_currentVerse);
+                if (AuthService.isAnonymous) {
+                  showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      title: const Text('Sign In to Save'),
+                      content: const Text('Create an account to save verses and sync them across devices.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('Not Now'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.pushNamed(context, '/auth');
+                          },
+                          child: const Text('Sign In'),
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  SavedVersesService.toggleSave(_currentVerse);
+                }
               },
             );
           },
