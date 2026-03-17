@@ -30,6 +30,7 @@ Your notification time preference is stored locally on your device and in your a
 The app uses the following third-party services:
 
 - **Google Sign-In** — for authentication. [Google Privacy Policy](https://policies.google.com/privacy)
+- **Firebase Anonymous Authentication** — used to allow guest access without an account. No personal data is collected for anonymous users.
 - **Firebase / Firestore** — for cloud storage of saved verses. [Firebase Privacy Policy](https://firebase.google.com/support/privacy)
 
 ## Data Retention
