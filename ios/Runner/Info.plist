@@ -66,6 +66,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>My Daily Verse sends you a daily Bible verse reminder at your chosen time.</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
